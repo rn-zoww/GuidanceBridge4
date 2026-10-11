@@ -1,0 +1,13 @@
+{
+  "name": "guidancebridge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GuidanceBridge: UPHSD guidance services site with an AI coping assistant",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

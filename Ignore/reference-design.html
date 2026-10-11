@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GuidanceBridge — You don't have to face it alone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+  --white:#ffffff;
+  --maroon:#800000;
+  --maroon-dark:#5e0000;
+  --maroon-ink:#2a0b0b;
+  --maroon-tint:#fbf3f3;
+  --maroon-tint-2:#f4e4e4;
+  --gold:#FFD700;
+  --ink:#2b2224;
+  --muted:#6f6264;
+  --line:#ecdede;
+  --radius:24px;
+  --shadow:0 18px 50px -20px rgba(128,0,0,.28);
+  --shadow-sm:0 6px 20px -10px rgba(60,10,10,.25);
+  --font-body:'DM Sans',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-head:'Fraunces',Georgia,'Times New Roman',serif;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 84px);scroll-behavior:smooth}
+body{margin:0;min-height:100%;background:#fff;color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--font-head);color:var(--maroon);line-height:1.12;margin:0 0 .5em;font-weight:600;letter-spacing:-.01em}
+h1{font-size:clamp(2.4rem,5.6vw,4.3rem)}
+h2{font-size:clamp(1.8rem,3.4vw,2.6rem)}
+h3{font-size:1.25rem}
+p{margin:0 0 1em}
+a{color:var(--maroon)}
+button{font-family:inherit}
+.wrap{width:min(1160px,100% - 40px);margin-inline:auto}
+.narrow{width:min(760px,100% - 40px);margin-inline:auto}
+.muted{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* header */
+.site-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.88);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:28px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--font-head);font-weight:600;font-size:1.3rem;color:var(--maroon)}
+.logo svg{display:block}
+.nav-links{display:flex;align-items:center;gap:26px;margin-left:auto}
+.nav-links a,.nav-links button.linklike{color:var(--ink);text-decoration:none;font-weight:500;font-size:.95rem;background:none;border:0;cursor:pointer;padding:6px 2px}
+.nav-links a:hover,.nav-links button.linklike:hover{color:var(--maroon)}
+.menu-btn{display:none;margin-left:auto;background:#fff;border:1px solid var(--line);border-radius:14px;width:44px;height:44px;cursor:pointer;color:var(--maroon)}
+@media(max-width:860px){
+  .menu-btn{display:grid;place-items:center}
+  .nav-links{position:absolute;left:0;right:0;top:72px;background:#fff;flex-direction:column;align-items:stretch;gap:4px;padding:14px 20px 20px;border-bottom:1px solid var(--line);display:none;margin:0;box-shadow:var(--shadow-sm)}
+  .nav-links.open{display:flex}
+  .nav-links a,.nav-links button.linklike{padding:12px 6px;text-align:left}
+}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:14px 26px;font-weight:600;font-size:1rem;text-decoration:none;cursor:pointer;border:2px solid transparent;transition:transform .15s,box-shadow .15s,background .15s,color .15s;line-height:1.2}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.chip:focus-visible{outline:3px solid rgba(128,0,0,.35);outline-offset:2px}
+.btn-primary{background:var(--maroon);color:#fff;box-shadow:0 10px 24px -12px rgba(128,0,0,.7)}
+.btn-primary:hover{background:var(--maroon-dark);transform:translateY(-1px)}
+.btn-outline{background:#fff;color:var(--maroon);border-color:var(--maroon)}
+.btn-outline:hover{background:var(--maroon-tint)}
+.btn-dark{background:var(--maroon-ink);color:#fff;padding:11px 20px;font-size:.92rem}
+.btn-dark:hover{background:#000}
+.btn-sm{padding:9px 16px;font-size:.88rem}
+.btn-block{width:100%}
+.btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
+
+/* hero */
+.hero{padding:72px 0 56px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1 em{font-style:italic;font-weight:500}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--maroon-tint);color:var(--maroon);font-weight:600;font-size:.82rem;border-radius:999px;padding:6px 14px;margin-bottom:22px;letter-spacing:.02em}
+.eyebrow i,.dot-gold{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.lead{font-size:1.2rem;color:#4a3d40;max-width:34em}
+.cta-stack{display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin:28px 0 14px}
+.cta-stack .btn{min-width:min(100%,300px)}
+.fine{font-size:.9rem;color:var(--muted)}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px}.hero{padding-top:40px}}
+
+/* preview card */
+.preview{background:#fff;border:1px solid var(--line);border-radius:32px;box-shadow:var(--shadow);padding:22px;position:relative}
+.preview::before{content:"";position:absolute;inset:-18px -18px auto auto;width:140px;height:140px;border-radius:50%;background:var(--maroon-tint);z-index:-1}
+.pv-head{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.avatar{width:44px;height:44px;border-radius:16px;background:var(--maroon);display:grid;place-items:center;flex:none}
+.pv-head b{display:block;line-height:1.2}
+.pv-head small{color:var(--muted)}
+.status{margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:var(--maroon-tint);color:var(--maroon);font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(255,215,0,.3)}
+.pv-body{display:flex;flex-direction:column;gap:12px;padding:18px 0;min-height:280px}
+.bubble{max-width:86%;padding:12px 16px;border-radius:20px;font-size:.96rem;line-height:1.5;animation:pop .4s ease both}
+.bubble.them{background:#f6f1f1;border-bottom-left-radius:6px;align-self:flex-start}
+.bubble.me{background:var(--maroon);color:#fff;border-bottom-right-radius:6px;align-self:flex-end}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fff;color:var(--maroon);border-radius:999px;padding:8px 14px;font-size:.88rem;font-weight:500;cursor:pointer;transition:background .15s,border-color .15s}
+.chip:hover{background:var(--maroon-tint);border-color:var(--maroon)}
+.pv-input{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:999px;padding:8px 8px 8px 18px;color:var(--muted);cursor:text;background:#fff;width:100%;text-align:left;font-size:.95rem}
+.pv-input span{flex:1}
+.pv-send{width:36px;height:36px;border-radius:50%;background:var(--maroon);display:grid;place-items:center}
+.pv-foot{display:flex;gap:14px;justify-content:center;font-size:.78rem;color:var(--muted);margin-top:14px;flex-wrap:wrap}
+
+/* sections */
+section.block{padding:84px 0}
+.tint{background:var(--maroon-tint)}
+.sec-head{max-width:640px;margin-bottom:44px}
+.sec-head p{color:var(--muted);font-size:1.1rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:980px){.grid4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.grid3,.grid2,.grid4{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-sm)}
+.card.flat{box-shadow:none}
+.card h3{margin-bottom:.4em}
+.card p{color:var(--muted);margin-bottom:0}
+.icon{width:52px;height:52px;border-radius:18px;background:var(--maroon-tint);display:grid;place-items:center;margin-bottom:18px;color:var(--maroon);position:relative}
+.icon .gem{position:absolute;top:8px;right:8px;width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.step-n{font-family:var(--font-head);font-size:.95rem;font-weight:600;color:var(--maroon);background:var(--maroon-tint);border-radius:999px;display:inline-flex;align-items:center;gap:8px;padding:4px 14px 4px 10px;margin-bottom:16px}
+.option-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s}
+.option-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.option-card .go{margin-top:auto;padding-top:18px;color:var(--maroon);font-weight:600;font-size:.92rem}
+.check-list{list-style:none;padding:0;margin:0}
+.check-list li{display:flex;gap:12px;padding:10px 0;color:#4a3d40}
+.check-list svg{flex:none;margin-top:3px}
+.band{background:var(--maroon);color:#fff;border-radius:36px;padding:56px;display:flex;gap:28px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.band h2{color:#fff;margin:0}
+.band p{margin:.5em 0 0;opacity:.88}
+.band .btn-primary{background:#fff;color:var(--maroon)}
+.band .btn-primary:hover{background:var(--maroon-tint)}
+footer.site-footer{border-top:1px solid var(--line);padding:44px 0 120px;color:var(--muted);font-size:.92rem}
+.foot-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.crisis{background:var(--maroon-tint);border-radius:18px;padding:16px 20px;color:#4a3d40;max-width:520px;font-size:.9rem}
+
+/* forms */
+.form-card{background:#fff;border:1px solid var(--line);border-radius:32px;box-shadow:var(--shadow);padding:40px}
+@media(max-width:600px){.form-card{padding:24px}}
+label.f{display:block;font-weight:600;font-size:.92rem;margin:0 0 6px}
+.hint{font-size:.84rem;color:var(--muted);font-weight:400;margin-top:4px}
+input[type=text],input[type=email],input[type=password],input[type=tel],input[type=datetime-local],select,textarea{width:100%;font:inherit;font-size:1rem;padding:13px 16px;border:1px solid #dccaca;border-radius:16px;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--maroon);box-shadow:0 0 0 4px rgba(128,0,0,.1);outline:none}
+textarea{resize:vertical;min-height:110px}
+.field{margin-bottom:20px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:600px){.row2{grid-template-columns:1fr}}
+.pillset{display:flex;flex-wrap:wrap;gap:8px}
+.pillset label{cursor:pointer}
+.pillset input{position:absolute;opacity:0;pointer-events:none}
+.pillset span{display:inline-block;border:1px solid #dccaca;border-radius:999px;padding:9px 16px;font-size:.92rem;font-weight:500;transition:all .15s;user-select:none}
+.pillset input:checked+span{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+.pillset input:focus-visible+span{outline:3px solid rgba(128,0,0,.35);outline-offset:2px}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:.94rem;color:#4a3d40;cursor:pointer}
+.check input{margin-top:5px;accent-color:var(--maroon);width:18px;height:18px;flex:none}
+.err{background:#fff0f0;border:1px solid #f0c4c4;color:#8a1111;border-radius:14px;padding:12px 16px;font-size:.92rem;margin-bottom:18px}
+.ok-note{background:var(--maroon-tint);border-radius:14px;padding:12px 16px;font-size:.92rem;margin-bottom:18px;color:#4a3d40}
+.page-pad{padding:56px 0 100px}
+.auth-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;padding:56px 0 100px}
+@media(max-width:900px){.auth-wrap{grid-template-columns:1fr;gap:28px;padding-top:28px}}
+.auth-side p{font-size:1.1rem;color:var(--muted)}
+.switch{margin-top:20px;font-size:.95rem;color:var(--muted)}
+
+/* badges */
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;font-size:.76rem;font-weight:700;padding:4px 11px;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+.badge.high{background:var(--maroon);color:#fff}
+.badge.high::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.badge.low{background:var(--maroon-tint);color:var(--maroon);border:1px solid var(--maroon-tint-2)}
+.badge.stat{background:#f6f1f1;color:#4a3d40;text-transform:none;letter-spacing:0;font-weight:600}
+.badge.gold{background:#fff;border:1px solid var(--line);color:var(--maroon);text-transform:none;letter-spacing:0}
+.badge.gold::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
+
+/* chat */
+.chat{display:flex;flex-direction:column;height:100%;min-height:0;background:#fff}
+.chat-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.chat-head b{line-height:1.2;display:block}
+.chat-head small{color:var(--muted);font-size:.8rem}
+.chat-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;min-height:0;scroll-behavior:smooth}
+.chat .bubble{max-width:88%;white-space:normal;overflow-wrap:anywhere}
+.bubble .sev{margin-top:8px}
+.bubble .cap{display:block;font-size:.74rem;color:var(--muted);margin-top:6px}
+.typing{display:inline-flex;gap:5px;padding:14px 16px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#bda7a9;animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.handoff{margin:2px 0;border:1px solid var(--line);border-radius:20px;padding:16px;background:var(--maroon-tint)}
+.handoff p{margin:0 0 12px;font-size:.92rem;color:#4a3d40}
+.handoff .btns{display:flex;flex-direction:column;gap:8px}
+.crisis-bar{background:var(--maroon);color:#fff;border-radius:16px;padding:12px 14px;font-size:.88rem}
+.chat-form{display:flex;gap:8px;padding:14px 16px;border-top:1px solid var(--line);align-items:flex-end}
+.chat-form textarea{min-height:48px;max-height:120px;padding:12px 16px;border-radius:22px;resize:none;flex:1}
+.send{width:48px;height:48px;border-radius:50%;border:0;background:var(--maroon);color:#fff;display:grid;place-items:center;cursor:pointer;flex:none}
+.send:hover{background:var(--maroon-dark)}
+.send[disabled]{opacity:.5;cursor:not-allowed}
+.chat-foot{font-size:.74rem;color:var(--muted);text-align:center;padding:0 16px 12px}
+.chat-page{height:calc(100dvh - 72px - 48px);min-height:520px;max-height:780px;border:1px solid var(--line);border-radius:32px;overflow:hidden;box-shadow:var(--shadow)}
+.chat-layout{display:grid;grid-template-columns:300px 1fr;gap:28px;padding:32px 0 60px;align-items:start}
+@media(max-width:900px){.chat-layout{grid-template-columns:1fr}.chat-page{height:78dvh}}
+
+/* floating widget */
+.fab{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:90;background:var(--maroon);color:#fff;border:0;border-radius:999px;padding:16px 24px;font-weight:600;font-size:1rem;cursor:pointer;box-shadow:0 14px 34px -10px rgba(128,0,0,.75);display:flex;align-items:center;gap:8px;transition:transform .15s,background .15s}
+.fab:hover{background:var(--maroon-dark);transform:translateY(-2px)}
+.fab:focus-visible{outline:3px solid rgba(128,0,0,.4);outline-offset:3px}
+.panel{position:fixed;right:20px;bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:91;width:min(400px,100vw - 24px);height:min(640px,calc(100dvh - 130px - env(safe-area-inset-bottom,0px) - env(safe-area-inset-top,0px)));background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:0 30px 80px -20px rgba(60,10,10,.45);overflow:hidden;display:none;flex-direction:column;transform-origin:bottom right}
+.panel.open{display:flex;animation:pop .25s ease both}
+.panel .close{position:absolute;top:14px;right:14px;border:0;background:var(--maroon-tint);color:var(--maroon);width:34px;height:34px;border-radius:50%;cursor:pointer;display:grid;place-items:center;z-index:2}
+.panel .chat-head{padding-right:60px}
+@media(max-width:520px){.panel{right:12px;left:12px;width:auto}.fab{right:14px}}
+
+/* dashboard */
+.dash{padding:40px 0 100px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+@media(max-width:800px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px 20px}
+.stat b{font-family:var(--font-head);font-size:2rem;color:var(--maroon);display:block;line-height:1.1}
+.stat span{font-size:.85rem;color:var(--muted)}
+.stat.hi{background:var(--maroon);border-color:var(--maroon)}
+.stat.hi b,.stat.hi span{color:#fff}
+.tabs{display:flex;gap:6px;background:var(--maroon-tint);border-radius:999px;padding:5px;width:fit-content;max-width:100%;overflow-x:auto;margin-bottom:22px}
+.tab{border:0;background:none;padding:10px 20px;border-radius:999px;font-weight:600;font-size:.92rem;color:var(--maroon);cursor:pointer;white-space:nowrap}
+.tab.on{background:var(--maroon);color:#fff}
+.dash-grid{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:24px;align-items:start}
+@media(max-width:900px){.dash-grid{grid-template-columns:1fr}}
+.group-title{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 10px}
+.item{width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;cursor:pointer;margin-bottom:10px;display:block;font:inherit;color:inherit;transition:border-color .15s,box-shadow .15s}
+.item:hover{border-color:var(--maroon)}
+.item.sel{border-color:var(--maroon);box-shadow:0 0 0 3px rgba(128,0,0,.12)}
+.item .top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:6px}
+.item b{font-weight:600}
+.item small{color:var(--muted);display:block}
+.detail{background:#fff;border:1px solid var(--line);border-radius:28px;padding:28px;min-height:320px;box-shadow:var(--shadow-sm)}
+.detail dl{display:grid;grid-template-columns:150px 1fr;gap:10px 18px;margin:18px 0}
+@media(max-width:600px){.detail dl{grid-template-columns:1fr}.detail dt{margin-top:8px}}
+.detail dt{color:var(--muted);font-size:.88rem}
+.detail dd{margin:0;overflow-wrap:anywhere}
+.msgs{max-height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:6px 2px 14px}
+.empty{text-align:center;color:var(--muted);padding:40px 10px}
+.list-card{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--maroon-ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:.92rem;z-index:200;max-width:calc(100vw - 32px);animation:pop .25s ease both}
+.ref{font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.12em;font-size:1.6rem;color:var(--maroon);background:var(--maroon-tint);border-radius:18px;padding:12px 22px;display:inline-block;margin:6px 0 16px}
+.entry{border:1px solid var(--line);border-radius:20px;padding:18px 20px;margin-bottom:14px}
+.entry img{max-width:100%;border-radius:14px;margin-top:12px;display:block}
+.entry time{font-size:.8rem;color:var(--muted)}
+.entry p{margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.entry .del{float:right;background:none;border:0;color:var(--muted);cursor:pointer;font-size:.85rem}
+.entry .del:hover{color:var(--maroon)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ===== Homepage restyle (from guidancebridge_dynamic) ===== */
+.hm-top{background:var(--maroon-dark);color:#fff;text-align:center;padding:7px 12px;font-size:.8rem}.hm-top b{color:var(--gold);font-weight:600}
+.hm-brandsub{display:block;font:600 .6rem/1.2 var(--font-body);letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.hm-hero{background:radial-gradient(ellipse at 85% 10%,#ffedac 0,transparent 28%),linear-gradient(125deg,#fff8f0,#fff 65%,#fff2ee);padding:68px 0 75px}
+.hm-hero h1{color:var(--ink);letter-spacing:-.04em;line-height:1.05;margin:18px 0}.hm-hero h1 em{color:var(--maroon);font-style:normal}
+.hm-hero .lead{color:#635d64;font-size:1.08rem;max-width:540px}
+.hm-eyebrow,.hm-kicker{display:inline-block}
+.hm-eyebrow{border:1px solid #ecd79c;border-radius:100px;background:#fff7d6;color:#725200;padding:6px 11px;font-size:.76rem;font-weight:700;letter-spacing:.04em}
+.hm-kicker{color:var(--maroon);font-size:.75rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.hm-rowbtn{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 18px}
+.hm-subtle{color:var(--muted);font-size:.9rem;margin:0}
+.hm-art{min-height:420px;display:grid;place-items:center;position:relative}
+.hm-orb{position:absolute;width:320px;height:320px;border-radius:50%;background:linear-gradient(135deg,#f8df86,#fff2c2);right:7%;top:2%}
+.hm-preview{z-index:1;width:min(380px,95%);transform:rotate(-2deg);padding:27px;border-radius:25px}
+.hm-preview::before{display:none}
+.hm-preview h3{font-size:1.5rem;margin:12px 0 8px}
+.hm-preview .pv-body{min-height:0;padding:14px 0}
+.hm-float{position:absolute;z-index:2;right:0;bottom:6px;background:#fff;padding:13px 16px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);font-size:.84rem;font-weight:700;color:var(--maroon)}
+.hm-gold{background:var(--gold);color:#392900;border:0;font-weight:700}.hm-gold:hover{filter:brightness(.96);transform:translateY(-1px)}
+.hm-head{text-align:center;max-width:690px;margin:0 auto 35px}.hm-head h2{margin:10px 0 14px}.hm-head p{color:var(--muted);margin:0}
+.hm-ico{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:#fff0bc;font-size:1.4rem;margin-bottom:6px}
+.option-card .go a{display:inline-block;margin-top:2px}
+.hm-soft{background:#fffaf8}
+.hm-split{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}
+.hm-steps{display:grid;gap:19px;margin-top:25px}.hm-step{display:flex;gap:13px}
+.hm-step h3{margin:0 0 4px;font-size:1.05rem}.hm-step p{margin:0}
+.hm-num{flex:0 0 37px;height:37px;border-radius:12px;background:#f7e7e5;color:var(--maroon);display:grid;place-items:center;font-weight:800}
+.hm-box{background:var(--maroon);color:#fff;border-radius:24px;padding:30px}
+.hm-box h3{color:#fff;font-size:1.55rem;margin:10px 0 12px}.hm-box p,.hm-box li{color:#f5dfdf}.hm-box li{margin:8px 0}.hm-box ul{padding-left:20px;margin:14px 0 22px}
+.hm-cta{background:#fff8e8;border-block:1px solid #f1e4c6;padding:56px 0}
+.hm-ctain{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}.hm-ctain h2{margin:8px 0 6px}
+@media(max-width:900px){.hm-hero{padding:44px 0}.hm-split{grid-template-columns:1fr;gap:28px}.hm-art{min-height:380px}.hm-orb{width:260px;height:260px}}
+@media(max-width:560px){.hm-brandsub{display:none}.hm-top{font-size:.73rem}}
+</style>
+</head>
+<body>
+<div class="hm-top">A gentle reminder: <b>you deserve to feel safe, heard, and supported.</b></div>
+<header class="site-header"><div class="wrap nav" id="nav"></div></header>
+<main id="app"></main>
+<div id="widget"></div>
+<div id="toasts"></div>
+
+<script>
+"use strict";
+/* ============================ CONFIG ============================ */
+const CONFIG = {
+  // Counselors must enter this code to create a counselor account. CHANGE IT before real use.
+  COUNSELOR_CODE: 'UPHSD-COUNSELOR',
+  // GPT-3.5 hookup. Browsers must never hold an OpenAI key, so point this at YOUR backend endpoint that
+  // forwards { model, messages } to OpenAI (gpt-3.5-turbo) and returns { reply: "..." }.
+  // Leave '' to use the built-in engine (Claude via the hosting runtime, then an offline rule-based fallback).
+  OPENAI_PROXY_URL: '',
+  OPENAI_MODEL: 'gpt-3.5-turbo'
+};
+const SYSTEM_PROMPT = "You are the GuidanceBridge AI Assistant for students. Your job is to provide supportive, immediate coping advice for peer pressure and bullying. STRICT GUARDRAILS: 1. NEVER identify, accuse, or determine the guilt of any individual. 2. NEVER conduct clinical therapy or replace human guidance counselors. 3. Keep advice focused on immediate emotional safety and coping mechanisms. 4. Always evaluate if the case is HIGH or LOW severity. 5. Conclude by offering to schedule a face-to-face appointment or an anonymous private chat with a counselor.";
+const FORMAT_ADDENDUM = "\n\nOUTPUT FORMAT (technical): Write in warm, plain language, under 140 words, no markdown or headings. On the very last line, output exactly [SEVERITY: HIGH] or [SEVERITY: LOW] and nothing after it. Treat any mention of self-harm, weapons, physical violence, threats, sexual contact or blackmail as HIGH.";
+
+/* ============================ UTIL ============================ */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nl = s => esc(s).replace(/\n/g,'<br>');
+const mem = {};
+const kv = {
+  get(k, s='local'){ try { const v=(s==='session'?sessionStorage:localStorage).getItem(k); return v; } catch(e){ return mem[s+k] ?? null; } },
+  set(k, v, s='local'){ try { (s==='session'?sessionStorage:localStorage).setItem(k, v); } catch(e){ mem[s+k]=v; } },
+  del(k, s='local'){ try { (s==='session'?sessionStorage:localStorage).removeItem(k); } catch(e){ delete mem[s+k]; } }
+};
+const jget = (k, d, s) => { try { const v=kv.get(k,s); return v ? JSON.parse(v) : d; } catch(e){ return d; } };
+const rid = n => Array.from(crypto.getRandomValues(new Uint8Array(n)), b => 'abcdefghjkmnpqrstuvwxyz23456789'[b % 31]).join('');
+const fmt = t => t ? new Date(t).toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}) : '';
+function makeAlias(){
+  const a=['Quiet','Brave','Calm','Gentle','Bright','Kind','Steady','Warm','Hopeful','Patient'];
+  const n=['Heron','Maple','Comet','River','Lantern','Sparrow','Willow','Harbor','Meadow','Finch'];
+  const r=crypto.getRandomValues(new Uint8Array(3));
+  return a[r[0]%a.length]+' '+n[r[1]%n.length]+' '+(10+r[2]%90);
+}
+function toast(msg){
+  const t=document.createElement('div'); t.className='toast'; t.setAttribute('role','status'); t.textContent=msg;
+  $('#toasts').appendChild(t); setTimeout(()=>t.remove(), 4200);
+}
+const go = p => { location.hash = '#'+p; };
+const ICON = {
+  chat:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',
+  cal:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
+  lock:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  book:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg>',
+  heart:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  shield:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg>',
+  send:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  check:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#800000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-width="1.6"/><path d="M8 12.5l3 3 5-6"/></svg>',
+  x:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#800000" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10" stroke-width="1.6"/><path d="M9 9l6 6M15 9l-6 6"/></svg>',
+  menu:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+  close:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+};
+const LOGO = '<svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="13" fill="#800000"/><path d="M7 25c4-9 22-9 26 0" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><path d="M7 25h26M13 25v-5M20 25v-7M27 25v-5" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="31" cy="11" r="3" fill="#FFD700"/></svg>';
+
+/* ============================ STORE (shared db with local fallback) ============================ */
+const Store = (() => {
+  let db = null, dbReady = false;
+  const waiters = [];
+  const localSubs = {};
+  const memStore = {};
+  const lk = c => 'gb:db:'+c;
+  function readLocal(c){ try { const v=kv.get(lk(c)); return v ? JSON.parse(v) : (memStore[c]||{}); } catch(e){ return memStore[c]||{}; } }
+  function writeLocal(c,o){ memStore[c]=o; kv.set(lk(c), JSON.stringify(o)); fire(c); }
+  const listLocal = c => Object.entries(readLocal(c)).map(([id,d]) => ({...d, id, _local:true}));
+  function fire(c){ (localSubs[c]||[]).forEach(f => f()); }
+  window.addEventListener('storage', e => { if(e.key && e.key.startsWith('gb:db:')) fire(e.key.slice(6)); });
+
+  const init = (async () => {
+    try {
+      if (window.claude && claude.use) {
+        db = await claude.use('db');
+      }
+    } catch(e){ db = null; }
+    dbReady = true; waiters.splice(0).forEach(f => f());
+  })();
+
+  const whenReady = f => dbReady ? f() : waiters.push(f);
+
+  async function set(c, id, data){
+    if (db) {
+      try { await db.collection(c).doc(id).set(data); return {id, local:false}; }
+      catch(e){ if(!Store._warned){ Store._warned=true; toast('Shared storage is read-only for this viewer — saved on this device only.'); } }
+    }
+    const o = readLocal(c); o[id] = data; writeLocal(c,o); return {id, local:true};
+  }
+  async function add(c, data){ return set(c, rid(14), data); }
+  async function update(c, id, patch){
+    if (db) {
+      try { const s = await db.collection(c).doc(id).get(); if (s.exists) { await db.collection(c).doc(id).update(patch); return; } } catch(e){}
+    }
+    const o = readLocal(c); if (o[id]) { o[id] = {...o[id], ...patch}; writeLocal(c,o); }
+  }
+  async function get(c, id){
+    await init;
+    if (db) { try { const s = await db.collection(c).doc(id).get(); if (s.exists) return {...s.data(), id}; } catch(e){} }
+    const o = readLocal(c); return o[id] ? {...o[id], id, _local:true} : null;
+  }
+  function subscribe(c, cb){
+    let remote = [], offDb = null, dead = false;
+    const emit = () => {
+      if (dead) return;
+      const loc = listLocal(c), ids = new Set(remote.map(r => r.id));
+      cb([...remote, ...loc.filter(l => !ids.has(l.id))]);
+    };
+    const f = () => emit();
+    (localSubs[c] = localSubs[c] || []).push(f);
+    emit();
+    whenReady(() => {
+      if (dead || !db) return;
+      try {
+        offDb = db.collection(c).onSnapshot(snap => { remote = snap.docs.map(d => ({...d.data(), id:d.id})); emit(); }, () => {});
+      } catch(e){}
+    });
+    return () => { dead = true; if (offDb) offDb(); localSubs[c] = (localSubs[c]||[]).filter(x => x !== f); };
+  }
+  return { init, set, add, update, get, subscribe, get hasDb(){ return !!db; } };
+})();
+
+/* ============================ AUTH (demo-grade) ============================ */
+const Auth = {
+  session(){ return jget('gb:session', null, 'session'); },
+  set(s){ kv.set('gb:session', JSON.stringify(s), 'session'); },
+  out(){ kv.del('gb:session','session'); Journal.lock(); },
+  async hash(pw, salt){
+    const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits({name:'PBKDF2', salt:Uint8Array.from(atob(salt), c => c.charCodeAt(0)), iterations:120000, hash:'SHA-256'}, km, 256);
+    return b64(bits);
+  },
+  async register(role, f){
+    const key = f.username.trim().toLowerCase();
+    if (!key) throw new Error('Please enter a username or school email.');
+    if (f.password.length < 8) throw new Error('Password needs at least 8 characters.');
+    if (f.password !== f.confirm) throw new Error('Passwords do not match.');
+    if (role === 'counselor' && f.code !== CONFIG.COUNSELOR_CODE) throw new Error('That counselor access code is not valid.');
+    const id = role + ':' + key;
+    if (await Store.get('accounts', id)) throw new Error('An account with that name already exists. Try signing in.');
+    const salt = b64(crypto.getRandomValues(new Uint8Array(16)));
+    const pw = await Auth.hash(f.password, salt);
+    const acct = { role, username:key, name:(f.name||'').trim(), alias:(f.alias||'').trim(), salt, pw, createdAt:Date.now() };
+    await Store.set('accounts', id, acct);
+    Auth.set({ role, username:key, name:acct.name, alias:acct.alias });
+    return acct;
+  },
+  async login(role, username, password){
+    const key = username.trim().toLowerCase();
+    const a = await Store.get('accounts', role + ':' + key);
+    if (!a || (await Auth.hash(password, a.salt)) !== a.pw) throw new Error('We could not match that username and password.');
+    Auth.set({ role, username:a.username, name:a.name, alias:a.alias });
+    return a;
+  }
+};
+function b64(buf){ const u = new Uint8Array(buf); let s=''; for(let i=0;i<u.length;i+=0x8000) s += String.fromCharCode.apply(null, u.subarray(i,i+0x8000)); return btoa(s); }
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+/* ============================ CHAT ENGINE ============================ */
+const HIGH_RE = /(kill myself|suicid|end my life|want to die|self[- ]?harm|hurt myself|cut myself|weapon|\bknife\b|\bgun\b|threaten(ed|ing)? (to )?(hurt|kill|beat)|beat(ing)? me|hit(ting)? me|punch(ed|ing)? me|kick(ed|ing)? me|sexual|touch(ed|ing)? me|blackmail|nudes?|can'?t go on|no reason to live|they will kill|going to hurt)/i;
+const samplePromise = (async () => { try { return (window.claude && claude.use) ? await claude.use('sample') : null; } catch(e){ return null; } })();
+
+const Local = {
+  topics: [
+    { k:'cyber', re:/(group chat|online|instagram|facebook|tiktok|\bpost(ed|ing)?\b|\bdm\b|messenger|meme|screenshot|comment)/i,
+      tip:"For things happening online, try not to reply. Take screenshots, mute or block, and keep the evidence somewhere private (the Journal on this site can hold it). You don't have to read every message." },
+    { k:'exclusion', re:/(left out|ignor|alone|no friends|sit alone|exclud|nobody talks)/i,
+      tip:"Being left out hurts, and it says nothing bad about your worth. If it feels possible, look for one small, safe connection: a club, a quiet classmate, or a teacher you trust." },
+    { k:'teasing', re:/(make fun|making fun|tease|teasing|laugh|insult|mock|call(ed|s)? me|names)/i,
+      tip:"You don't owe anyone a reaction. A calm, short line such as \"Not funny, stop\" and then walking toward a teacher, a friend, or a busy place can take the energy out of it." },
+    { k:'pressure', re:/(pressure|dare|vape|smok|drink|cut class|skip|gang|fraternity|make me|force me|join them)/i,
+      tip:"Saying no is allowed, even to people you want to like you. You can say \"I'm good\", blame a schedule, or step away. You never have to explain yourself." }
+  ],
+  reply(messages){
+    const mine = messages.filter(m => m.role==='user').map(m => m.content).join(' ');
+    const high = HIGH_RE.test(mine);
+    const hit = this.topics.filter(t => t.re.test(mine)).slice(0,2);
+    const parts = [];
+    parts.push(high
+      ? "Thank you for telling me. What you described is serious, and your safety comes first. I'm marking this as high priority so a human counselor can look at it first."
+      : "Thank you for sharing that. It makes sense to feel this way, and you're not in trouble for talking about it.");
+    hit.forEach(t => parts.push(t.tip));
+    parts.push("Right now, try one slow breath: in for 4, hold for 4, out for 6. Do it three times, and keep your shoulders loose.");
+    if (high) parts.push("If you are in immediate danger, move to a safe place near a trusted adult and call 911.");
+    parts.push("I can't investigate or decide who is at fault, and I'm not a replacement for a counselor. Would you like to schedule a face-to-face appointment, or start an anonymous private chat with a counselor?");
+    return { reply: parts.join('\n\n'), sev: high ? 'HIGH' : 'LOW' };
+  }
+};
+
+const AI = {
+  async ask(messages){
+    if (CONFIG.OPENAI_PROXY_URL) {
+      const r = await fetch(CONFIG.OPENAI_PROXY_URL, { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ model: CONFIG.OPENAI_MODEL, messages: [{role:'system', content: SYSTEM_PROMPT + FORMAT_ADDENDUM}, ...messages.map(m => ({role:m.role, content:m.content}))] }) });
+      if (!r.ok) throw new Error('proxy ' + r.status);
+      const d = await r.json();
+      return AI.parse(d.reply || d.choices?.[0]?.message?.content || '');
+    }
+    const sample = await Promise.race([samplePromise, new Promise(res => setTimeout(() => res(null), 11000))]);
+    if (!sample) throw new Error('no-ai');
+    const transcript = messages.map(m => (m.role==='user' ? 'Student: ' : 'Assistant: ') + m.content).join('\n');
+    const prompt = SYSTEM_PROMPT + FORMAT_ADDENDUM + '\n\nConversation so far:\n' + transcript + "\n\nWrite the Assistant's next reply now.";
+    const out = await sample(prompt, { cache:false, modelTier:'quick' });
+    return AI.parse(out.text);
+  },
+  parse(t){
+    const m = /\[SEVERITY:\s*(HIGH|LOW)\]/i.exec(t || '');
+    const reply = (t || '').replace(/\[SEVERITY:[^\]]*\]/ig, '').trim();
+    if (!reply) throw new Error('empty');
+    return { reply, sev: m ? m[1].toUpperCase() : null };
+  }
+};
+
+const Chat = (() => {
+  const KEY = 'gb:chat';
+  const saved = jget(KEY, null, 'session') || {};
+  const state = { messages: saved.messages || [], severity: saved.severity || null, crisis: !!saved.crisis, busy:false };
+  const subs = new Set();
+  const save = () => kv.set(KEY, JSON.stringify({messages:state.messages, severity:state.severity, crisis:state.crisis}), 'session');
+  const emit = () => subs.forEach(f => f());
+  async function send(text){
+    text = (text||'').trim();
+    if (!text || state.busy) return;
+    state.messages.push({ role:'user', content:text });
+    if (HIGH_RE.test(text)) { state.severity = 'HIGH'; state.crisis = true; }
+    state.busy = true; save(); emit();
+    let out, fallback = false;
+    try { out = await AI.ask(state.messages); }
+    catch(e){ out = Local.reply(state.messages); fallback = true; }
+    const sev = (out.sev === 'HIGH' || state.severity === 'HIGH') ? 'HIGH' : 'LOW';
+    if (sev === 'HIGH') state.crisis = state.crisis || HIGH_RE.test(state.messages.map(m=>m.content).join(' '));
+    state.severity = sev;
+    state.messages.push({ role:'assistant', content: out.reply, severity: sev, fallback });
+    state.busy = false; save(); emit();
+  }
+  function reset(){ state.messages = []; state.severity = null; state.crisis = false; save(); emit(); }
+  const summary = () => state.messages.filter(m => m.role==='user').map(m => m.content).join(' | ').slice(0, 600);
+  return { state, subs, send, reset, summary };
+})();
+
+function startAppointmentFromChat(){
+  kv.set('gb:prefill', JSON.stringify({ severity: Chat.state.severity || 'LOW', summary: Chat.summary() }), 'session');
+  closeWidget(); go('/appointment');
+}
+async function startAnonChat(sev, summary){
+  let t = jget('gb:thread', null);
+  if (!t) {
+    t = { id: rid(14), alias: makeAlias() };
+    kv.set('gb:thread', JSON.stringify(t));
+    await Store.set('threads', t.id, { alias:t.alias, severity: sev || 'LOW', status:'open', createdAt:Date.now(), lastMsgAt:Date.now(), lastFrom:'student', preview: summary ? summary.slice(0,160) : 'New anonymous chat' });
+    if (summary) await Store.add('messages', { threadId:t.id, from:'student', text:'(Shared from my GuidanceBridge conversation) ' + summary, ts:Date.now() });
+  }
+  closeWidget(); go('/portal');
+}
+function startAnonFromChat(){ startAnonChat(Chat.state.severity || 'LOW', Chat.summary()); }
+
+function mountChat(root, opts = {}){
+  root.innerHTML = `
+    <div class="chat">
+      <div class="chat-head">
+        <div class="avatar" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 40 40"><path d="M7 25c4-9 22-9 26 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M7 25h26" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="31" cy="11" r="3.4" fill="#FFD700"/></svg></div>
+        <div><b>GuidanceBridge Assistant</b><small>Private. No names needed.</small></div>
+        <span class="status" style="margin-left:auto">Here to listen</span>
+      </div>
+      <div class="chat-body" role="log" aria-live="polite"></div>
+      <form class="chat-form">
+        <label class="sr" for="${opts.id}-in">Message</label>
+        <textarea id="${opts.id}-in" rows="1" placeholder="Type privately…" maxlength="1000"></textarea>
+        <button class="send" type="submit" aria-label="Send">${ICON.send}</button>
+      </form>
+      <div class="chat-foot">AI coping support only — not therapy, and not a replacement for a counselor. It never judges or names anyone.</div>
+    </div>`;
+  const body = $('.chat-body', root), form = $('form', root), ta = $('textarea', root), sendBtn = $('.send', root);
+  if (opts.compact) $('.panel-fix', root);
+  const starters = ['Someone keeps teasing me', "I'm being left out", "I'm pressured to do things I don't want", 'I want to talk to a person'];
+  function draw(){
+    const s = Chat.state;
+    let h = '';
+    if (!s.messages.length) {
+      h += `<div class="bubble them">Hi, I'm the GuidanceBridge assistant. You can tell me what's going on, and you don't need to name anyone. Nothing here is posted publicly. What's been happening?</div>
+            <div class="chips">${starters.map(x => `<button type="button" class="chip" data-s="${esc(x)}">${esc(x)}</button>`).join('')}</div>`;
+    }
+    s.messages.forEach(m => {
+      if (m.role === 'user') h += `<div class="bubble me">${nl(m.content)}</div>`;
+      else h += `<div class="bubble them">${nl(m.content)}<div class="sev"><span class="badge ${m.severity==='HIGH'?'high':'low'}">${m.severity==='HIGH'?'High priority':'Low priority'}</span></div>${m.fallback?'<span class="cap">Offline support mode</span>':''}</div>`;
+    });
+    if (s.busy) h += `<div class="bubble them typing" aria-label="Typing"><i></i><i></i><i></i></div>`;
+    if (s.crisis) h += `<div class="crisis-bar"><b>If you're in immediate danger:</b> go to a trusted adult nearby and call <b>911</b>. For emotional crisis support in the Philippines, the NCMH crisis hotline is <b>1553</b>.</div>`;
+    const lastA = [...s.messages].reverse().find(m => m.role==='assistant');
+    if (lastA && !s.busy) {
+      const hi = s.severity === 'HIGH';
+      h += `<div class="handoff"><p>${hi ? 'A human counselor should see this first. Choose how you want to connect:' : 'Want to talk with a real counselor? Choose what feels easiest:'}</p>
+        <div class="btns"><button class="btn btn-primary btn-sm" data-act="appt">Schedule a face-to-face meeting</button>
+        <button class="btn btn-outline btn-sm" data-act="anon">Start an anonymous private chat</button>
+        <button class="chip" data-act="clear" style="align-self:flex-start">Clear this conversation</button></div></div>`;
+    }
+    body.innerHTML = h;
+    sendBtn.disabled = s.busy;
+    body.scrollTop = body.scrollHeight;
+  }
+  body.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.s) Chat.send(b.dataset.s);
+    else if (b.dataset.act === 'appt') startAppointmentFromChat();
+    else if (b.dataset.act === 'anon') startAnonFromChat();
+    else if (b.dataset.act === 'clear') Chat.reset();
+  });
+  form.addEventListener('submit', e => { e.preventDefault(); const v = ta.value; ta.value=''; ta.style.height=''; Chat.send(v); });
+  ta.addEventListener('keydown', e => { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
+  ta.addEventListener('input', () => { ta.style.height='auto'; ta.style.height = Math.min(ta.scrollHeight,120)+'px'; });
+  Chat.subs.add(draw); draw();
+  return { focus: () => ta.focus(), destroy: () => Chat.subs.delete(draw) };
+}
+
+/* floating widget (every page) */
+let widgetChat = null;
+function buildWidget(){
+  $('#widget').innerHTML = `
+    <div class="panel" id="panel" role="dialog" aria-label="GuidanceBridge chat"><button class="close" id="panel-close" aria-label="Close chat">${ICON.close}</button><div id="panel-chat" style="height:100%"></div></div>
+    <button class="fab" id="fab" aria-expanded="false" aria-controls="panel">Talk to us ↗</button>`;
+  widgetChat = mountChat($('#panel-chat'), { id:'wchat', compact:true });
+  $('#fab').addEventListener('click', () => {
+    if (location.hash === '#/chat') { const el = $('#main-chat textarea'); if (el) el.focus(); return; }
+    const p = $('#panel'); const open = !p.classList.contains('open');
+    p.classList.toggle('open', open); $('#fab').setAttribute('aria-expanded', open);
+    if (open) widgetChat.focus();
+  });
+  $('#panel-close').addEventListener('click', closeWidget);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWidget(); });
+}
+function closeWidget(){ const p=$('#panel'); if(p){ p.classList.remove('open'); $('#fab').setAttribute('aria-expanded','false'); } }
+
+/* ============================ JOURNAL (encrypted, on-device) ============================ */
+const Journal = (() => {
+  let key = null;
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const sk = u => 'gb:journal:' + u;
+  async function derive(pass, salt){
+    const km = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({name:'PBKDF2', salt, iterations:150000, hash:'SHA-256'}, km, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+  }
+  async function seal(obj){ const iv = crypto.getRandomValues(new Uint8Array(12)); const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, enc.encode(JSON.stringify(obj))); return { iv:b64(iv), ct:b64(ct) }; }
+  async function open(x){ const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:unb64(x.iv)}, key, unb64(x.ct)); return JSON.parse(dec.decode(pt)); }
+  return {
+    exists: u => !!jget(sk(u), null),
+    unlocked: () => !!key,
+    lock(){ key = null; },
+    async create(u, pass){ const salt = crypto.getRandomValues(new Uint8Array(16)); key = await derive(pass, salt); const check = await seal({ok:1}); kv.set(sk(u), JSON.stringify({ salt:b64(salt), check, entries:[] })); },
+    async unlock(u, pass){ const j = jget(sk(u), null); const k = await derive(pass, unb64(j.salt)); const prev = key; key = k; try { await open(j.check); } catch(e){ key = prev; throw new Error('That passphrase did not unlock your journal.'); } },
+    async list(u){ const j = jget(sk(u), {entries:[]}); const out = []; for (const e of j.entries) { try { out.push({ id:e.id, ...(await open(e)) }); } catch(_){} } return out.sort((a,b) => b.ts - a.ts); },
+    async add(u, text, img){ const j = jget(sk(u), null); const s = await seal({ ts:Date.now(), text, img:img||null }); j.entries.push({ id:rid(8), ...s }); kv.set(sk(u), JSON.stringify(j)); },
+    remove(u, id){ const j = jget(sk(u), null); j.entries = j.entries.filter(e => e.id !== id); kv.set(sk(u), JSON.stringify(j)); }
+  };
+})();
+function shrinkImage(file){
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => { const im = new Image(); im.onload = () => {
+      const m = 900, r = Math.min(1, m / Math.max(im.width, im.height)); const c = document.createElement('canvas');
+      c.width = Math.round(im.width*r); c.height = Math.round(im.height*r); c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+      res(c.toDataURL('image/jpeg', .62)); }; im.onerror = rej; im.src = fr.result; };
+    fr.onerror = rej; fr.readAsDataURL(file);
+  });
+}
+
+/* ============================ VIEWS ============================ */
+const sevBadge = s => `<span class="badge ${s==='HIGH'?'high':'low'}">${s==='HIGH'?'High priority':'Low priority'}</span>`;
+const footer = () => `
+  <footer class="site-footer"><div class="wrap foot-grid">
+    <div><a class="logo" href="#/">${LOGO}<span>GuidanceBridge</span></a><p style="margin-top:12px;max-width:340px">A safe, anonymous bridge between students and school guidance counselors.</p></div>
+    <div class="crisis"><b style="color:var(--maroon)">In immediate danger?</b> Tell a trusted adult nearby and call <b>911</b>. For emotional crisis support in the Philippines, the NCMH crisis hotline is <b>1553</b>. GuidanceBridge is not an emergency service.</div>
+  </div></footer>`;
+
+const Views = {};
+
+Views['/'] = {
+  html: () => `
+  <section class="hero hm-hero"><div class="wrap hero-grid">
+    <div>
+      <span class="hm-eyebrow">● A safe first step, at your pace</span>
+      <h1>You don't have to face it <em>alone</em>.</h1>
+      <p class="lead">GuidanceBridge helps you find a next step when school or peer relationships feel difficult. Get practical coping ideas and connect with a real school guidance counselor when you're ready.</p>
+      <div class="hm-rowbtn">
+        <button class="btn btn-primary" id="hero-talk">💬 Start a private check-in</button>
+        <a class="btn btn-outline" href="#/appointment">Book a counselor ↗</a>
+      </div>
+      <p class="hm-subtle">✓ No judgment. No pressure to explain everything at once.</p>
+    </div>
+    <div class="hm-art">
+      <div class="hm-orb"></div>
+      <div class="preview hm-preview" aria-label="Sample conversation preview">
+        <span class="hm-kicker">Your wellbeing matters</span>
+        <h3>One small step is still a step forward.</h3>
+        <p class="hm-subtle">You can pause, breathe, and choose what kind of support feels right for you.</p>
+        <div class="pv-body" id="pv-body"></div>
+        <button class="btn hm-gold" id="pv-input" style="width:100%">Let's start here →</button>
+      </div>
+      <div class="hm-float">✦ Support without shame</div>
+    </div>
+  </div></section>
+
+  <section class="block" id="support"><div class="wrap">
+    <div class="hm-head"><div class="hm-kicker">A bridge to support</div><h2>Support that starts with you.</h2><p>You choose how to begin. GuidanceBridge offers a calm first step and helps you reach the right human support.</p></div>
+    <div class="grid3">
+      <a class="card option-card" href="#/chat"><div class="hm-ico">🌱</div><h3>Small, practical steps</h3><p>Explore grounding techniques, boundary-setting ideas, and ways to respond to difficult peer situations.</p><span class="go">Start a check-in →</span></a>
+      <a class="card option-card" href="#/journal"><div class="hm-ico">🛡️</div><h3>Privacy-minded by design</h3><p>Use an alias, and keep your personal journal entries encrypted on this device. Nothing is posted publicly.</p><span class="go">Open private journal →</span></a>
+      <div class="card option-card"><div class="hm-ico">🤝</div><h3>Human support when needed</h3><p>Request a face-to-face appointment or request an anonymous counselor chat session.</p><span class="go"><a href="#/appointment">Book an appointment →</a><br><a href="#/portal">Open anonymous chat →</a></span></div>
+    </div>
+  </div></section>
+
+  <section class="block hm-soft" id="how"><div class="wrap hm-split">
+    <div>
+      <div class="hm-kicker">How it works</div><h2>Start where you feel comfortable.</h2>
+      <p class="hm-subtle">You don't need the perfect words or know exactly what kind of help you need.</p>
+      <div class="hm-steps">
+        <div class="hm-step"><div class="hm-num">1</div><div><h3>Check in privately</h3><p class="hm-subtle">Share only what feels okay. Avoid names and identifying details.</p></div></div>
+        <div class="hm-step"><div class="hm-num">2</div><div><h3>Get a next-step suggestion</h3><p class="hm-subtle">Receive basic coping ideas and a non-clinical priority flag.</p></div></div>
+        <div class="hm-step"><div class="hm-num">3</div><div><h3>Choose your support path</h3><p class="hm-subtle">Request a face-to-face appointment or a private counselor chat.</p></div></div>
+      </div>
+    </div>
+    <div class="hm-box">
+      <div class="hm-kicker" style="color:var(--gold)">A clear boundary</div>
+      <h3>Technology helps you take the first step. People help you through the hard parts.</h3>
+      <p>This assistant is not therapy, a crisis service, or a formal reporting channel. It does not investigate incidents or decide who is at fault.</p>
+      <ul><li>Serious safety concerns need immediate human support.</li><li>Your private journal is encrypted on this device.</li><li>Never share passwords or unnecessary personal details.</li></ul>
+      <a class="btn hm-gold" href="#/appointment">Connect with a counselor</a>
+    </div>
+  </div></section>
+
+  <section class="block hm-cta"><div class="wrap hm-ctain">
+    <div><div class="hm-kicker">You can begin today</div><h2>You deserve to be listened to.</h2><p class="hm-subtle" style="margin:0">Take one step at your own pace.</p></div>
+    <div class="hm-rowbtn" style="margin:0"><button class="btn btn-primary" id="band-talk">Talk it through</button><a class="btn btn-outline" href="#/appointment">Request appointment</a></div>
+  </div></section>
+  ${footer()}`,
+  mount(){
+    const body = $('#pv-body'); let timers = [];
+    const add = (cls, text, d) => timers.push(setTimeout(() => { const b = document.createElement('div'); b.className = 'bubble ' + cls; b.textContent = text; body.appendChild(b); }, d));
+    add('me', "Some classmates keep making fun of me in the group chat. I don't want to go to school tomorrow.", 300);
+    add('them', "That sounds really heavy, and it makes sense that you feel this way. You're not in trouble for talking about it. Want to try a one-minute breathing reset first?", 1500);
+    timers.push(setTimeout(() => {
+      const c = document.createElement('div'); c.className = 'chips'; c.innerHTML = '<button class="chip" data-a="y">Yes, let\'s try</button><button class="chip" data-a="c">Talk to a counselor</button>'; body.appendChild(c);
+      c.addEventListener('click', e => {
+        const b = e.target.closest('button'); if (!b) return; c.remove();
+        if (b.dataset.a === 'c') { go('/appointment'); return; }
+        const m = document.createElement('div'); m.className = 'bubble me'; m.textContent = "Yes, let's try"; body.appendChild(m);
+        setTimeout(() => { const t = document.createElement('div'); t.className = 'bubble them'; t.textContent = 'Breathe in for 4… hold for 4… out for 6. Repeat three times. When you\'re ready, I can connect you with a counselor.'; body.appendChild(t); }, 700);
+      });
+    }, 2700));
+    const open = () => { if (!$('#panel').classList.contains('open')) $('#fab').click(); };
+    $('#hero-talk').onclick = open; $('#band-talk').onclick = open; $('#pv-input').onclick = open;
+    return () => timers.forEach(clearTimeout);
+  }
+};
+
+Views['/chat'] = {
+  html: () => `
+  <div class="wrap chat-layout">
+    <aside>
+      <span class="eyebrow"><i></i> Assistant</span>
+      <h2 style="font-size:2rem">Talk it through, privately.</h2>
+      <p class="muted">Share as much or as little as you like. The assistant offers coping ideas and checks how urgent things are. It never names or blames anyone.</p>
+      <ul class="check-list">
+        <li>${ICON.shield}<span>Nothing is posted or shared unless you choose to.</span></li>
+        <li>${ICON.heart}<span>You can switch to a human counselor at any point.</span></li>
+      </ul>
+    </aside>
+    <div class="chat-page" id="main-chat"></div>
+  </div>
+  ${footer()}`,
+  mount(){ const c = mountChat($('#main-chat'), { id:'pchat' }); return () => c.destroy(); }
+};
+
+/* ---------- auth pages ---------- */
+function authPage({ role, mode }){
+  const isC = role === 'counselor', reg = mode === 'register';
+  const title = isC ? (reg ? 'Create a counselor account' : 'Counselor portal sign in') : (reg ? 'Create your student account' : 'Student sign in');
+  const sub = isC ? 'Review requests by priority, manage appointments, and reply to anonymous chats.' : 'An account lets you keep a private encrypted journal. You never need one to talk to the assistant or ask for help.';
+  const other = reg ? `/${role}-login` : `/${role}-register`;
+  return {
+    html: () => `
+    <div class="wrap auth-wrap">
+      <div class="auth-side"><span class="eyebrow"><i></i> ${isC ? 'For school counselors' : 'For students'}</span><h1 style="font-size:clamp(2rem,4vw,3rem)">${title}</h1><p>${sub}</p></div>
+      <form class="form-card" id="auth-form" novalidate>
+        <div id="auth-err"></div>
+        ${reg && isC ? `<div class="field"><label class="f" for="a-name">Full name</label><input id="a-name" type="text" autocomplete="name" required></div>` : ''}
+        <div class="field"><label class="f" for="a-user">${isC ? 'School email' : 'Username or school email'}</label><input id="a-user" type="${isC ? 'email' : 'text'}" autocomplete="username" required>${reg && !isC ? '<div class="hint">You can use a nickname. Your real name is not required.</div>' : ''}</div>
+        ${reg && !isC ? `<div class="field"><label class="f" for="a-alias">Anonymous alias</label><input id="a-alias" type="text" value="${esc(makeAlias())}"><div class="hint">This is the name counselors see in private chats.</div></div>` : ''}
+        <div class="field"><label class="f" for="a-pw">Password</label><input id="a-pw" type="password" autocomplete="${reg ? 'new-password' : 'current-password'}" required>${reg ? '<div class="hint">At least 8 characters.</div>' : ''}</div>
+        ${reg ? `<div class="field"><label class="f" for="a-pw2">Confirm password</label><input id="a-pw2" type="password" autocomplete="new-password" required></div>` : ''}
+        ${reg && isC ? `<div class="field"><label class="f" for="a-code">Counselor access code</label><input id="a-code" type="password" required><div class="hint">Provided by your guidance office.</div></div>` : ''}
+        <button class="btn btn-primary btn-block" type="submit" id="auth-go">${reg ? 'Create account' : 'Sign in'}</button>
+        <p class="switch">${reg ? 'Already have an account?' : 'New here?'} <a href="#${other}">${reg ? 'Sign in' : 'Create an account'}</a>${isC ? '' : ' · <a href="#/counselor-login">Counselor portal ↗</a>'}${isC ? ' · <a href="#/student-login">Student sign in</a>' : ''}</p>
+      </form>
+    </div>`,
+    mount(){
+      $('#auth-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = $('#auth-go'); btn.disabled = true; $('#auth-err').innerHTML = '';
+        try {
+          const f = { username:$('#a-user').value, password:$('#a-pw').value, confirm: $('#a-pw2') ? $('#a-pw2').value : '', name: $('#a-name') ? $('#a-name').value : '', alias: $('#a-alias') ? $('#a-alias').value : '', code: $('#a-code') ? $('#a-code').value : '' };
+          if (reg) await Auth.register(role, f); else await Auth.login(role, f.username, f.password);
+          go(isC ? '/counselor' : '/student');
+        } catch(err){ $('#auth-err').innerHTML = `<div class="err" role="alert">${esc(err.message)}</div>`; btn.disabled = false; }
+      });
+    }
+  };
+}
+Views['/student-login'] = authPage({ role:'student', mode:'login' });
+Views['/student-register'] = authPage({ role:'student', mode:'register' });
+Views['/counselor-login'] = authPage({ role:'counselor', mode:'login' });
+Views['/counselor-register'] = authPage({ role:'counselor', mode:'register' });
+
+/* ---------- appointment form ---------- */
+Views['/appointment'] = {
+  html: () => {
+    const pre = jget('gb:prefill', {}, 'session'), s = Auth.session();
+    const sev = pre.severity || 'LOW';
+    return `
+    <div class="narrow page-pad">
+      <span class="eyebrow"><i></i> Face-to-face</span>
+      <h1 style="font-size:clamp(2rem,4.5vw,3.2rem)">Request a counselor meeting</h1>
+      <p class="lead" style="font-size:1.1rem">Tell us a little so the counselor can prepare. You don't have to name anyone, and you can use a nickname.</p>
+      <form class="form-card" id="appt-form" novalidate>
+        <div id="appt-err"></div>
+        <div class="row2">
+          <div class="field"><label class="f" for="p-name">Name or nickname</label><input id="p-name" type="text" value="${esc(s && s.role==='student' ? (s.alias || s.username) : '')}" required><div class="hint">A nickname is fine.</div></div>
+          <div class="field"><label class="f" for="p-grade">Grade / year level</label><input id="p-grade" type="text" placeholder="e.g. Grade 9 – Section B" required></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label class="f" for="p-id">Student ID <span class="muted" style="font-weight:400">(optional)</span></label><input id="p-id" type="text"></div>
+          <div class="field"><label class="f" for="p-contact">How should we reach you? <span class="muted" style="font-weight:400">(optional)</span></label><input id="p-contact" type="text" placeholder="School email or number"><div class="hint">Leave blank to just check this site for updates.</div></div>
+        </div>
+        <div class="field"><span class="f label-like" style="font-weight:600;font-size:.92rem;display:block;margin-bottom:8px">What best describes what's happening?</span>
+          <div class="pillset" id="p-concern">${['Teasing or name-calling','Being left out','Online / group chat','Pushing or physical','Peer pressure','Something else'].map((x,i) => `<label><input type="radio" name="concern" value="${esc(x)}" ${i===0?'checked':''}><span>${esc(x)}</span></label>`).join('')}</div></div>
+        <div class="field"><span style="font-weight:600;font-size:.92rem;display:block;margin-bottom:8px">How urgent does this feel?</span>
+          <div class="pillset"><label><input type="radio" name="sev" value="LOW" ${sev==='LOW'?'checked':''}><span>I'd like to talk soon</span></label><label><input type="radio" name="sev" value="HIGH" ${sev==='HIGH'?'checked':''}><span>It's urgent or I feel unsafe</span></label></div>
+          ${pre.severity ? `<div class="hint">We pre-filled this from your chat. Change it if it doesn't feel right.</div>` : ''}</div>
+        <div class="field"><span style="font-weight:600;font-size:.92rem;display:block;margin-bottom:8px">Days that could work</span>
+          <div class="pillset">${['Mon','Tue','Wed','Thu','Fri'].map(d => `<label><input type="checkbox" name="day" value="${d}"><span>${d}</span></label>`).join('')}</div></div>
+        <div class="field"><span style="font-weight:600;font-size:.92rem;display:block;margin-bottom:8px">Best time</span>
+          <div class="pillset">${['Morning','Lunch break','Afternoon','After classes'].map((d,i) => `<label><input type="radio" name="time" value="${d}" ${i===0?'checked':''}><span>${d}</span></label>`).join('')}</div></div>
+        <div class="field"><label class="f" for="p-notes">Anything you'd like the counselor to know? <span class="muted" style="font-weight:400">(optional)</span></label><textarea id="p-notes" maxlength="1200" placeholder="Describe how you're feeling or what you need. You don't have to name anyone."></textarea></div>
+        ${pre.summary ? `<div class="field"><label class="check"><input type="checkbox" id="p-share"><span>Share a short summary of what I told the assistant, so I don't have to repeat myself.</span></label></div>` : ''}
+        <div class="field"><label class="check"><input type="checkbox" id="p-consent" required><span>I understand a school counselor will see this request. It won't be shared with other students.</span></label></div>
+        <button class="btn btn-primary btn-block" type="submit" id="p-go">Send request</button>
+      </form>
+    </div>
+    ${footer()}`;
+  },
+  mount(){
+    $('#appt-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const err = m => { $('#appt-err').innerHTML = `<div class="err" role="alert">${esc(m)}</div>`; window.scrollTo({top:0, behavior:'smooth'}); };
+      const name = $('#p-name').value.trim(), grade = $('#p-grade').value.trim();
+      if (!name) return err('Please add a name or nickname.');
+      if (!grade) return err('Please add your grade or year level.');
+      if (!$('#p-consent').checked) return err('Please tick the box to confirm you understand who sees this.');
+      const pre = jget('gb:prefill', {}, 'session');
+      const share = $('#p-share') && $('#p-share').checked;
+      const code = 'GB-' + rid(5).toUpperCase();
+      const data = {
+        ref: code, type:'appointment', name, grade, studentId: $('#p-id').value.trim(), contact: $('#p-contact').value.trim(),
+        concern: ($('input[name=concern]:checked')||{}).value || '', severity: ($('input[name=sev]:checked')||{}).value || 'LOW',
+        days: $$('input[name=day]:checked').map(x => x.value), time: ($('input[name=time]:checked')||{}).value || '',
+        notes: $('#p-notes').value.trim(), chatSummary: share ? pre.summary : '', status:'new', createdAt: Date.now()
+      };
+      $('#p-go').disabled = true;
+      const r = await Store.set('appointments', code.toLowerCase(), data);
+      const refs = jget('gb:refs', []); refs.push(code.toLowerCase()); kv.set('gb:refs', JSON.stringify(refs));
+      kv.del('gb:prefill','session');
+      $('#app').innerHTML = `<div class="narrow page-pad" style="text-align:center"><div class="form-card">
+        <div class="icon" style="margin-inline:auto">${ICON.check}</div><h1 style="font-size:2.2rem">Request sent. Thank you for reaching out.</h1>
+        <p class="muted">That took courage. A counselor will review your request${data.severity==='HIGH' ? ' <b>as a priority</b>' : ''} and confirm a time.</p>
+        <p style="margin-bottom:4px">Your reference code</p><div class="ref">${esc(code)}</div>
+        <p class="muted">Save this code. You can check the status of your request on this site, on this device.${r.local ? '<br><b>Note:</b> it was saved on this device only.' : ''}</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="btn btn-primary" href="#/portal">Open anonymous chat</a><a class="btn btn-outline" href="#/">Back home</a></div>
+        ${data.severity==='HIGH' ? '<p class="fine" style="margin-top:20px">If you feel unsafe right now, tell a trusted adult nearby and call 911.</p>' : ''}
+      </div></div>${footer()}`;
+      window.scrollTo({top:0});
+    });
+  }
+};
+
+/* ---------- anonymous private chat (student side) ---------- */
+Views['/portal'] = {
+  html: () => {
+    const t = jget('gb:thread', null);
+    if (!t) return `<div class="narrow page-pad"><span class="eyebrow"><i></i> Anonymous</span>
+      <h1 style="font-size:clamp(2rem,4.5vw,3.2rem)">Chat with a counselor, anonymously</h1>
+      <p class="lead" style="font-size:1.1rem">You'll get a made-up alias. Counselors never see your name unless you decide to share it.</p>
+      <div class="form-card"><div class="field"><span style="font-weight:600;font-size:.92rem;display:block;margin-bottom:8px">How urgent does this feel?</span>
+      <div class="pillset"><label><input type="radio" name="sev" value="LOW" ${Chat.state.severity!=='HIGH'?'checked':''}><span>I'd like to talk soon</span></label><label><input type="radio" name="sev" value="HIGH" ${Chat.state.severity==='HIGH'?'checked':''}><span>It's urgent or I feel unsafe</span></label></div></div>
+      ${Chat.state.messages.length ? `<div class="field"><label class="check"><input type="checkbox" id="share-sum"><span>Share a short summary of my chat with the assistant.</span></label></div>` : ''}
+      <button class="btn btn-primary btn-block" id="start-anon">Start anonymous chat</button></div></div>${footer()}`;
+    return `<div class="wrap" style="padding:32px 0 60px"><div style="max-width:820px;margin:0 auto">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px"><h2 style="margin:0;font-size:1.8rem">Private chat</h2><span class="badge gold">You are ${esc(t.alias)}</span><button class="chip" id="leave-thread" style="margin-left:auto">End &amp; forget this chat</button></div>
+      <div class="chat-page" style="height:min(640px,calc(100dvh - 190px))"><div class="chat"><div class="chat-body" id="pm-body" role="log" aria-live="polite"></div>
+      <form class="chat-form" id="pm-form"><label class="sr" for="pm-in">Message</label><textarea id="pm-in" rows="1" placeholder="Write to your counselor…" maxlength="1000"></textarea><button class="send" aria-label="Send">${ICON.send}</button></form>
+      <div class="chat-foot">A counselor will reply here. Replies may take a little while. If you're in danger, call 911.</div></div></div></div></div>${footer()}`;
+  },
+  mount(){
+    const t = jget('gb:thread', null);
+    if (!t) {
+      $('#start-anon').onclick = async () => { const sev = ($('input[name=sev]:checked')||{}).value; await startAnonChat(sev, $('#share-sum') && $('#share-sum').checked ? Chat.summary() : ''); render(); };
+      return;
+    }
+    const body = $('#pm-body'); let msgs = [], thread = null;
+    const draw = () => {
+      let h = `<div class="bubble them">Hi ${esc(t.alias)}. This is a private space. A counselor will reply as soon as they can. Feel free to write what's on your mind.</div>`;
+      msgs.filter(m => m.threadId === t.id).sort((a,b) => a.ts - b.ts).forEach(m => { h += `<div class="bubble ${m.from==='student'?'me':'them'}">${nl(m.text)}</div>`; });
+      if (thread && thread.status === 'closed') h += `<div class="ok-note" style="text-align:center">A counselor marked this chat as complete. You can always start a new one.</div>`;
+      body.innerHTML = h; body.scrollTop = body.scrollHeight;
+    };
+    const offM = Store.subscribe('messages', l => { msgs = l; draw(); });
+    const offT = Store.subscribe('threads', l => { thread = l.find(x => x.id === t.id) || null; draw(); });
+    const form = $('#pm-form'), ta = $('#pm-in');
+    form.addEventListener('submit', async e => {
+      e.preventDefault(); const text = ta.value.trim(); if (!text) return; ta.value = '';
+      await Store.add('messages', { threadId:t.id, from:'student', text, ts:Date.now() });
+      await Store.update('threads', t.id, { lastMsgAt:Date.now(), lastFrom:'student', preview:text.slice(0,160), status:'open' });
+    });
+    ta.addEventListener('keydown', e => { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
+    $('#leave-thread').onclick = () => { if (confirm('This forgets your alias on this device. The counselor can still see past messages. Continue?')) { kv.del('gb:thread'); render(); } };
+    return () => { offM(); offT(); };
+  }
+};
+
+/* ---------- student space ---------- */
+Views['/student'] = {
+  guard: () => { const s = Auth.session(); return s && s.role === 'student' ? null : '/student-login'; },
+  html: () => { const s = Auth.session(); return `
+    <div class="wrap page-pad">
+      <span class="eyebrow"><i></i> Your space</span>
+      <h1 style="font-size:clamp(2rem,4.5vw,3.2rem)">Welcome, ${esc(s.alias || s.username)}.</h1>
+      <p class="lead" style="font-size:1.1rem">Take whatever you need today. Everything here is private to you.</p>
+      <div class="grid4" style="margin-top:34px">
+        <a class="card option-card" href="#/chat"><div class="icon">${ICON.chat}<i class="gem"></i></div><h3>Talk to the assistant</h3><p>Coping ideas, right now.</p><span class="go">Open →</span></a>
+        <a class="card option-card" href="#/appointment"><div class="icon">${ICON.cal}<i class="gem"></i></div><h3>Meet a counselor</h3><p>Book a face-to-face visit.</p><span class="go">Request →</span></a>
+        <a class="card option-card" href="#/portal"><div class="icon">${ICON.lock}<i class="gem"></i></div><h3>Anonymous chat</h3><p>Message with an alias.</p><span class="go">Open →</span></a>
+        <a class="card option-card" href="#/journal"><div class="icon">${ICON.book}<i class="gem"></i></div><h3>Private journal</h3><p>Encrypted notes and screenshots.</p><span class="go">Open →</span></a>
+      </div>
+      <h2 style="margin-top:56px;font-size:1.7rem">Your requests</h2><div id="my-reqs"></div>
+    </div>${footer()}`; },
+  mount(){
+    const refs = jget('gb:refs', []);
+    return Store.subscribe('appointments', list => {
+      const mine = list.filter(a => refs.includes(a.id)).sort((a,b) => b.createdAt - a.createdAt);
+      $('#my-reqs').innerHTML = mine.length ? mine.map(a => `<div class="card flat list-card" style="margin-bottom:12px"><div><b>${esc(a.ref)}</b> · ${esc(a.concern)}<br><small class="muted">Sent ${esc(fmt(a.createdAt))}${a.scheduledFor ? ' · Scheduled: ' + esc(fmt(a.scheduledFor)) : ''}</small></div><span class="badge stat">${esc(({new:'Received',confirmed:'Confirmed',completed:'Completed',cancelled:'Cancelled'})[a.status] || a.status)}</span></div>`).join('') : '<p class="muted">No requests yet on this device.</p>';
+    });
+  }
+};
+
+/* ---------- journal ---------- */
+Views['/journal'] = {
+  guard: () => { const s = Auth.session(); return s && s.role === 'student' ? null : '/student-login'; },
+  html: () => `<div class="narrow page-pad"><span class="eyebrow"><i></i> Evidence locker</span>
+    <h1 style="font-size:clamp(2rem,4.5vw,3.2rem)">Private journal</h1>
+    <p class="lead" style="font-size:1.1rem">Timestamped notes and screenshots, encrypted with your passphrase and kept only on this device. Not even counselors can read them unless you choose to show them.</p>
+    <div id="j-root"></div></div>${footer()}`,
+  mount(){
+    const u = Auth.session().username, root = $('#j-root');
+    const gate = (mode) => {
+      root.innerHTML = `<form class="form-card" id="j-gate"><div id="j-err"></div>
+        <div class="field"><label class="f" for="j-pass">${mode==='create' ? 'Create a journal passphrase' : 'Enter your journal passphrase'}</label><input id="j-pass" type="password" autocomplete="off" required>
+        ${mode==='create' ? '<div class="hint"><b>Write it down somewhere safe.</b> It can\'t be recovered. Without it, the entries stay locked forever.</div>' : ''}</div>
+        <button class="btn btn-primary btn-block" type="submit">${mode==='create' ? 'Create journal' : 'Unlock'}</button></form>`;
+      $('#j-gate').addEventListener('submit', async e => {
+        e.preventDefault(); const p = $('#j-pass').value;
+        try { if (mode==='create') { if (p.length < 8) throw new Error('Use at least 8 characters.'); await Journal.create(u,p); } else await Journal.unlock(u,p); open(); }
+        catch(err){ $('#j-err').innerHTML = `<div class="err" role="alert">${esc(err.message)}</div>`; }
+      });
+    };
+    async function open(){
+      const items = await Journal.list(u);
+      root.innerHTML = `<form class="form-card" id="j-new" style="margin-bottom:28px"><div id="j-err"></div>
+        <div class="field"><label class="f" for="j-text">New entry</label><textarea id="j-text" placeholder="What happened? Add what you remember. The time is saved automatically."></textarea></div>
+        <div class="field"><label class="f" for="j-img">Attach a screenshot <span class="muted" style="font-weight:400">(optional)</span></label><input id="j-img" type="file" accept="image/*"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Save encrypted entry</button><button class="btn btn-outline" type="button" id="j-lock">Lock journal</button></div></form>
+        <div>${items.length ? items.map(e => `<article class="entry"><button class="del" data-id="${esc(e.id)}">Delete</button><time>${esc(fmt(e.ts))}</time><p>${esc(e.text)}</p>${e.img && /^data:image\/jpeg;base64,/.test(e.img) ? `<img alt="Saved screenshot" src="${e.img}">` : ''}</article>`).join('') : '<p class="muted" style="text-align:center">No entries yet.</p>'}</div>`;
+      $('#j-lock').onclick = () => { Journal.lock(); gate('unlock'); };
+      $$('.del', root).forEach(b => b.onclick = () => { if (confirm('Delete this entry permanently?')) { Journal.remove(u, b.dataset.id); open(); } });
+      $('#j-new').addEventListener('submit', async e => {
+        e.preventDefault(); const text = $('#j-text').value.trim(), f = $('#j-img').files[0];
+        if (!text && !f) return;
+        try { const img = f ? await shrinkImage(f) : null; await Journal.add(u, text, img); open(); }
+        catch(err){ $('#j-err').innerHTML = '<div class="err">Could not save that entry. The image may be too large for device storage.</div>'; }
+      });
+    }
+    if (Journal.unlocked()) open(); else gate(Journal.exists(u) ? 'unlock' : 'create');
+  }
+};
+
+/* ---------- counselor dashboard ---------- */
+Views['/counselor'] = {
+  guard: () => { const s = Auth.session(); return s && s.role === 'counselor' ? null : '/counselor-login'; },
+  html: () => { const s = Auth.session(); return `
+    <div class="wrap dash">
+      <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end"><div><span class="eyebrow"><i></i> Counselor portal</span><h1 style="font-size:clamp(2rem,4vw,3rem);margin:0">Priority triage</h1><p class="muted" style="margin:6px 0 0">Signed in as ${esc(s.name || s.username)}${Store.hasDb ? '' : ' · <b>local mode</b> (no shared database in this view)'}</p></div></div>
+      <div class="stats" id="stats"></div>
+      <div class="tabs" role="tablist"><button class="tab on" data-tab="triage">Triage inbox</button><button class="tab" data-tab="appts">Appointments</button><button class="tab" data-tab="chats">Anonymous chats</button></div>
+      <div class="dash-grid"><div id="d-list"></div><div class="detail" id="d-detail"><div class="empty">Select a request to review it.</div></div></div>
+    </div>${footer()}`; },
+  mount(){
+    const S = { tab:'triage', sel:null, appts:[], threads:[], msgs:[], lastDetail:'' };
+    const active = x => !['completed','cancelled','closed'].includes(x.status);
+    const rank = x => (x.severity === 'HIGH' ? 0 : 1);
+    const all = () => [...S.appts.map(a => ({...a, kind:'appt'})), ...S.threads.map(t => ({...t, kind:'chat'}))];
+
+    function stats(){
+      const act = all().filter(active), hi = act.filter(x => x.severity==='HIGH').length;
+      const waiting = S.threads.filter(t => t.status==='open' && t.lastFrom==='student').length;
+      $('#stats').innerHTML = `<div class="stat hi"><b>${hi}</b><span>High priority open</span></div><div class="stat"><b>${act.length - hi}</b><span>Low priority open</span></div><div class="stat"><b>${S.appts.filter(a => a.status==='new').length}</b><span>New appointment requests</span></div><div class="stat"><b>${waiting}</b><span>Chats awaiting reply</span></div>`;
+    }
+    function card(x){
+      const title = x.kind === 'appt' ? esc(x.name) : esc(x.alias);
+      const sub = x.kind === 'appt' ? esc(x.concern) + (x.grade ? ' · ' + esc(x.grade) : '') : esc(x.preview || 'Anonymous chat');
+      const st = x.kind === 'appt' ? ({new:'New',confirmed:'Confirmed',completed:'Completed',cancelled:'Cancelled'})[x.status] : (x.status==='closed' ? 'Closed' : (x.lastFrom==='student' ? 'Awaiting reply' : 'Replied'));
+      return `<button class="item ${S.sel === x.kind + ':' + x.id ? 'sel' : ''}" data-k="${x.kind}" data-id="${esc(x.id)}"><div class="top"><b>${x.kind==='appt' ? '📅 ' : '💬 '}${title}</b>${sevBadge(x.severity)}</div><small>${sub}</small><div class="top" style="margin:8px 0 0"><span class="badge stat">${esc(st)}</span><small>${esc(fmt(x.kind==='appt' ? x.createdAt : x.lastMsgAt))}</small></div></button>`;
+    }
+    function list(){
+      let items = all();
+      if (S.tab === 'appts') items = items.filter(x => x.kind === 'appt');
+      if (S.tab === 'chats') items = items.filter(x => x.kind === 'chat');
+      const t = x => x.kind==='appt' ? x.createdAt : x.lastMsgAt;
+      items.sort((a,b) => (active(b)-active(a)) || (rank(a)-rank(b)) || (t(b)-t(a)));
+      let h = '';
+      if (S.tab === 'triage') {
+        const act = items.filter(active);
+        const hi = act.filter(x => x.severity==='HIGH'), lo = act.filter(x => x.severity!=='HIGH');
+        h += `<div class="group-title"><span class="badge high">High</span> ${hi.length} need attention first</div>` + (hi.map(card).join('') || '<div class="empty">Nothing urgent. 🎉</div>');
+        h += `<div class="group-title"><span class="badge low">Low</span> ${lo.length} open</div>` + (lo.map(card).join('') || '<div class="empty">No low-priority requests.</div>');
+      } else h = items.map(card).join('') || '<div class="empty">Nothing here yet.</div>';
+      $('#d-list').innerHTML = h;
+    }
+    function detail(force){
+      const [k, id] = (S.sel || ':').split(/:(.*)/s);
+      const el = $('#d-detail');
+      if (!S.sel) return;
+      if (k === 'appt') {
+        const a = S.appts.find(x => x.id === id); if (!a) return;
+        const sig = JSON.stringify(a); if (!force && sig === S.lastDetail) return; S.lastDetail = sig;
+        el.innerHTML = `<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><h2 style="font-size:1.6rem;margin:0">${esc(a.name)}</h2>${sevBadge(a.severity)}</div><p class="muted" style="margin:4px 0 0">Ref ${esc(a.ref)} · received ${esc(fmt(a.createdAt))}</p>
+          <dl><dt>Grade / level</dt><dd>${esc(a.grade)}</dd><dt>Student ID</dt><dd>${esc(a.studentId || '—')}</dd><dt>Contact</dt><dd>${esc(a.contact || 'Check the site for updates')}</dd><dt>Concern</dt><dd>${esc(a.concern)}</dd><dt>Availability</dt><dd>${esc((a.days||[]).join(', ') || 'Any day')} · ${esc(a.time)}</dd><dt>Student's note</dt><dd>${a.notes ? nl(a.notes) : '—'}</dd><dt>Chat summary</dt><dd>${a.chatSummary ? nl(a.chatSummary) : 'Not shared'}</dd></dl>
+          <div class="row2"><div class="field"><label class="f" for="d-status">Status</label><select id="d-status">${['new','confirmed','completed','cancelled'].map(s => `<option value="${s}" ${a.status===s?'selected':''}>${s[0].toUpperCase()+s.slice(1)}</option>`).join('')}</select></div>
+          <div class="field"><label class="f" for="d-when">Scheduled for</label><input id="d-when" type="datetime-local" value="${esc(a.scheduledFor || '')}"></div></div>
+          <div class="field"><label class="f" for="d-note">Counselor notes (visible to counselors only)</label><textarea id="d-note">${esc(a.counselorNote || '')}</textarea></div>
+          <button class="btn btn-primary" id="d-save">Save update</button>`;
+        $('#d-save').onclick = async () => { await Store.update('appointments', a.id, { status:$('#d-status').value, scheduledFor:$('#d-when').value, counselorNote:$('#d-note').value, updatedAt:Date.now() }); toast('Updated'); };
+      } else if (k === 'chat') {
+        const t = S.threads.find(x => x.id === id); if (!t) return;
+        const ms = S.msgs.filter(m => m.threadId === id).sort((a,b) => a.ts - b.ts);
+        const sig = JSON.stringify([t, ms.length, ms[ms.length-1] && ms[ms.length-1].ts]); if (!force && sig === S.lastDetail) return; S.lastDetail = sig;
+        const draft = $('#d-reply') ? $('#d-reply').value : '', hadFocus = document.activeElement && document.activeElement.id === 'd-reply';
+        el.innerHTML = `<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><h2 style="font-size:1.6rem;margin:0">${esc(t.alias)}</h2>${sevBadge(t.severity)}</div><p class="muted" style="margin:4px 0 12px">Anonymous chat · started ${esc(fmt(t.createdAt))}</p>
+          <div class="msgs" id="d-msgs">${ms.map(m => `<div class="bubble ${m.from==='student'?'them':'me'}" style="max-width:85%;${m.from==='student'?'':'align-self:flex-end'}">${nl(m.text)}<span class="cap" style="${m.from==='student'?'':'color:#fff;opacity:.8'}">${esc(fmt(m.ts))}</span></div>`).join('') || '<div class="empty">No messages yet.</div>'}</div>
+          ${t.status==='closed' ? '<div class="ok-note">This chat is closed.</div>' : ''}
+          <form id="d-form" style="display:flex;gap:8px;align-items:flex-end;margin-top:8px"><textarea id="d-reply" rows="2" style="min-height:56px" placeholder="Reply as 'Counselor'…"></textarea><button class="btn btn-primary" type="submit">Send</button></form>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-outline btn-sm" id="d-sev">Mark as ${t.severity==='HIGH' ? 'low' : 'high'} priority</button><button class="btn btn-outline btn-sm" id="d-close">${t.status==='closed' ? 'Reopen chat' : 'Mark resolved'}</button></div>`;
+        const r = $('#d-reply'); r.value = draft; if (hadFocus) r.focus();
+        const box = $('#d-msgs'); box.scrollTop = box.scrollHeight;
+        $('#d-form').addEventListener('submit', async e => { e.preventDefault(); const text = r.value.trim(); if (!text) return; r.value = '';
+          await Store.add('messages', { threadId:id, from:'counselor', text, ts:Date.now() });
+          await Store.update('threads', id, { lastMsgAt:Date.now(), lastFrom:'counselor', preview:text.slice(0,160) }); });
+        r.addEventListener('keydown', e => { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); $('#d-form').requestSubmit(); } });
+        $('#d-sev').onclick = () => Store.update('threads', id, { severity: t.severity==='HIGH' ? 'LOW' : 'HIGH' });
+        $('#d-close').onclick = () => Store.update('threads', id, { status: t.status==='closed' ? 'open' : 'closed' });
+      }
+    }
+    const refresh = () => { stats(); list(); detail(false); };
+    const offs = [
+      Store.subscribe('appointments', l => { S.appts = l; refresh(); }),
+      Store.subscribe('threads', l => { S.threads = l; refresh(); }),
+      Store.subscribe('messages', l => { S.msgs = l; refresh(); })
+    ];
+    $$('.tab').forEach(b => b.onclick = () => { $$('.tab').forEach(x => x.classList.toggle('on', x === b)); S.tab = b.dataset.tab; list(); });
+    $('#d-list').addEventListener('click', e => { const b = e.target.closest('.item'); if (!b) return; S.sel = b.dataset.k + ':' + b.dataset.id; S.lastDetail = ''; list(); detail(true); if (matchMedia('(max-width:900px)').matches) $('#d-detail').scrollIntoView({behavior:'smooth', block:'start'}); });
+    return () => offs.forEach(f => f());
+  }
+};
+
+/* ============================ ROUTER ============================ */
+let cleanup = () => {};
+function renderNav(){
+  const s = Auth.session();
+  const home = (id, label) => `<a href="#/" data-scroll="${id}">${label}</a>`;
+  $('#nav').innerHTML = `
+    <a class="logo" href="#/" aria-label="GuidanceBridge home">${LOGO}<span>GuidanceBridge<small class="hm-brandsub">UPHSD • Student wellbeing</small></span></a>
+    <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false">${ICON.menu}</button>
+    <nav class="nav-links" id="nav-links" aria-label="Main">
+      ${home('how','How it works')}${home('support','Support options')}
+      ${s && s.role==='student' ? '<a href="#/student">My space</a>' : '<a href="#/student-login">Student sign in</a>'}
+      ${s ? '<button class="linklike" id="signout">Sign out</button>' : ''}
+      <a class="btn btn-dark" href="#/${s && s.role==='counselor' ? 'counselor' : 'counselor-login'}">Counselor portal ↗</a>
+    </nav>`;
+  $('#menu-btn').onclick = () => { const o = $('#nav-links').classList.toggle('open'); $('#menu-btn').setAttribute('aria-expanded', o); };
+  const so = $('#signout'); if (so) so.onclick = () => { Auth.out(); go('/'); render(); };
+  $$('[data-scroll]').forEach(a => a.addEventListener('click', e => {
+    const id = a.dataset.scroll; $('#nav-links').classList.remove('open');
+    const cur = (location.hash.slice(1) || '/');
+    if (cur === '/') { e.preventDefault(); const el = document.getElementById(id); if (el) el.scrollIntoView({behavior:'smooth'}); }
+    else kv.set('gb:scroll', id, 'session');
+  }));
+}
+function render(){
+  try { cleanup(); } catch(e){}
+  cleanup = () => {};
+  const path = (location.hash.slice(1) || '/').split('?')[0];
+  const v = Views[path] || Views['/'];
+  const redirect = v.guard && v.guard();
+  if (redirect) { go(redirect); return; }
+  $('#app').innerHTML = v.html();
+  renderNav();
+  document.title = 'GuidanceBridge — ' + (path === '/' ? "You don't have to face it alone" : path.slice(1).replace(/-/g,' '));
+  const c = v.mount && v.mount(); if (typeof c === 'function') cleanup = c;
+  const sc = kv.get('gb:scroll','session');
+  if (sc) { kv.del('gb:scroll','session'); setTimeout(() => { const el = document.getElementById(sc); if (el) el.scrollIntoView({behavior:'smooth'}); }, 30); }
+  else window.scrollTo({top:0, behavior:'instant'});
+  const fab = $('#fab'); if (fab) fab.style.display = '';
+}
+window.addEventListener('hashchange', () => { closeWidget(); render(); });
+buildWidget();
+render();
+</script>
+</body>
+</html>

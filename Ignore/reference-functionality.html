@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GuidanceBridge | UPHSD Guidance Services</title>
+<style>
+:root{--m:#800000;--g:#FFD700;--ink:#2b1818;--line:#eadcdc;--soft:#fbf6f1}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:#fff}
+h1,h2,h3,.logo{font-family:Georgia,"Times New Roman",serif;color:var(--m);margin:.2em 0}
+header{background:var(--m);border-bottom:4px solid var(--g);display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem;padding:.6rem 1rem}
+.logo{color:var(--g);font-size:1.5rem;font-weight:700;text-decoration:none}
+nav{display:flex;flex-wrap:wrap;gap:.2rem;margin-left:auto}
+nav a{color:#fff;text-decoration:none;padding:.35rem .75rem;border-radius:20px}
+nav a:hover,nav a.on{background:var(--g);color:var(--m)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+main{max-width:960px;margin:0 auto;padding:1.2rem 1rem 7rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1.1rem;margin:1rem 0}
+.hero{background:var(--m);color:#fff;border-radius:16px;padding:2.2rem 1.4rem 0;border-bottom:8px solid var(--g);overflow:hidden}
+.hero h1{color:var(--g);font-size:clamp(1.9rem,6vw,3rem);line-height:1.1;max-width:14em}
+.hero p{max-width:34em;font-size:1.1rem}
+.hero svg{display:block;width:100%;height:70px;margin-top:1.2rem}
+.btn{display:inline-block;background:var(--m);color:#fff;border:2px solid var(--m);border-radius:10px;padding:.55rem 1.1rem;font:inherit;font-weight:600;cursor:pointer;text-decoration:none}
+.btn.g{background:var(--g);border-color:var(--g);color:var(--m)}
+.btn.o{background:#fff;color:var(--m)}
+label{display:block;font-weight:600;margin:.8rem 0 .2rem}
+input,select,textarea{width:100%;padding:.6rem;border:1px solid #cbb;border-radius:8px;font:inherit;background:#fff}
+.grid{display:grid;gap:0 1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.badge{padding:.1rem .65rem;border-radius:12px;font-size:.85rem;font-weight:700}
+.HIGH{background:#b00000;color:#fff}.LOW{background:#ffefb0;color:#5c4400}
+.log{height:340px;overflow:auto;padding:.6rem;background:var(--soft);border-radius:10px}
+.m{max-width:85%;width:fit-content;padding:.5rem .8rem;margin:.4rem 0;border-radius:12px;white-space:pre-wrap}
+.m.u{background:var(--m);color:#fff;margin-left:auto}
+.m.b{background:#fff;border:1px solid var(--line)}
+.row{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}.row input{flex:1;min-width:0}
+#fab{position:fixed;right:16px;bottom:16px;z-index:9;width:60px;height:60px;border-radius:50%;background:var(--g);color:var(--m);border:3px solid var(--m);font-size:26px;cursor:pointer}
+#wid{position:fixed;right:16px;bottom:88px;z-index:9;width:min(380px,calc(100vw - 32px));display:none}
+#wid.open{display:block}#wid .card{margin:0;box-shadow:0 8px 30px #0006}#wid .log{height:260px}
+.err{color:#b00000;min-height:1.4em;margin:.5rem 0}small{color:#6b5a5a}
+[hidden]{display:none!important}
+body.full{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+body.full main{flex:1;min-height:0;max-width:none;padding:0;display:flex}
+body.full #fab,body.full #wid{display:none}
+.fc{flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:920px;margin:0 auto;background:#fff}
+.fh{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 1rem;border-bottom:1px solid var(--line)}
+.ft{font-family:Georgia,serif;color:var(--m);font-size:1.2rem}
+.fc .log{flex:1;height:auto;min-height:0;border-radius:0;padding:1rem}
+.fc .m{max-width:78%}
+.fc>.row{margin:0;padding:.7rem 1rem calc(.7rem + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);flex-wrap:nowrap}
+@media(max-width:600px){.fc .m{max-width:90%}header{gap:.2rem}.logo{font-size:1.25rem}nav{flex-wrap:nowrap;overflow-x:auto;width:100%;margin-left:0;scrollbar-width:none}nav a{white-space:nowrap}}
+@media(prefers-reduced-motion:no-preference){.hero svg path{stroke-dasharray:400;stroke-dashoffset:400;animation:d 1.6s ease forwards}}
+@keyframes d{to{stroke-dashoffset:0}}
+</style></head>
+<body>
+<header><a class="logo" href="#/">GuidanceBridge</a><nav></nav></header>
+<main id="app"></main>
+<script>
+const $=(s,e=document)=>e.querySelector(s),$$=(s,e=document)=>[...e.querySelectorAll(s)],app=$('#app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const h=async s=>{try{return[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('')}catch{return btoa(s)}};
+const KEY='gb_db',R={};
+// System prompt (as specified) + one line so the reply can be parsed for the severity flag.
+const SP=`You are the GuidanceBridge AI Assistant for students. Your job is to provide supportive, immediate coping advice for peer pressure and bullying. STRICT GUARDRAILS: 1. NEVER identify, accuse, or determine the guilt of any individual. 2. NEVER conduct clinical therapy or replace human guidance counselors. 3. Keep advice focused on immediate emotional safety and coping mechanisms. 4. Always evaluate if the case is HIGH or LOW severity. 5. Conclude by offering to schedule a face-to-face appointment or an anonymous private chat with a counselor. Begin every reply with the line "SEVERITY: HIGH" or "SEVERITY: LOW". Re-assess severity on every message using the whole conversation, so it can go down as well as up. HIGH means the student may be in danger now (self-harm, suicidal thoughts, abuse, threats, weapons). If the student earlier showed signs of danger and now says they are fine or asks you to lower the priority, do not just agree: warmly check in once, asking whether they are safe right now and whether those thoughts have passed, and keep HIGH until they clearly say they are safe. Once they do, switch to LOW, stay supportive, and remind them a counselor is available anytime. Do not repeat crisis hotlines or the same safety script in later replies unless there is new danger. Students are in the Philippines, so when a crisis line is needed give only the NCMH Crisis Hotline 1553 and 911, briefly. Write plain text with no markdown symbols.`;
+let db=JSON.parse(localStorage[KEY]||'null')||{users:[],appts:[],threads:[]},live=null,OT=null;
+const save=()=>localStorage[KEY]=JSON.stringify(db),me=()=>db.users.find(u=>u.id===sessionStorage.me);
+const need=r=>{const u=me();if(!u||u.role!=r){location.hash=r=='admin'?'#/admin':'#/login';return 0}return u};
+
+/* ---------- AI chatbot (shared by chat page and floating widget) ---------- */
+let msgs=[{r:'b',t:"Hi, I'm the GuidanceBridge assistant. I can share quick coping tips for bullying or peer pressure. I'm not a counselor and I won't judge or accuse anyone. What's going on?"}],sev=null,peak=null,busy=0;
+const HI=/suicid|kill|hurt myself|self.?harm|end it all|weapon|knife|gun|abuse|rape|threat|beat me|hit me|want to die/i;
+const md=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+const chatHTML=()=>`<div class="log ai"></div><div class="row"><input class="ci" placeholder="Type here. No names needed." maxlength="500" aria-label="Message"><button class="btn cs">Send</button></div>`;
+function draw(){$$('.log.ai').forEach(l=>{l.innerHTML=msgs.map(m=>`<div class="m ${m.r}">${m.r=='b'?md(m.t):esc(m.t)}</div>`).join('')+(busy?'<div class="m b">Typing…</div>':'')+(sev&&msgs.length>2&&!busy?`<div style="text-align:center;margin-top:.6rem"><span class="badge ${sev}">${sev} priority</span><div class="row" style="justify-content:center"><a class="btn g" href="#/appointment">Book face-to-face</a><button class="btn o" onclick="startThread()">Chat anonymously</button></div></div>`:'');l.scrollTop=1e9})}
+const wire=r=>{const i=$('.ci',r);$('.cs',r).onclick=()=>send(i);i.onkeydown=e=>{if(e.key=='Enter')send(i)}};
+const local=t=>`SEVERITY: ${HI.test(t)?'HIGH':'LOW'}\nThank you for telling me. That sounds hard, and it is not your fault. For right now:\n1. Move to a place where you feel safe, close to a trusted person.\n2. Breathe in for 4, hold for 4, out for 6. Repeat a few times.\n3. Keep screenshots or notes of what happened. Please don't reply in anger or get back at anyone.\n4. Tell someone you trust.\nA counselor can help from here. Would you like a face-to-face appointment or an anonymous private chat with a counselor?`;
+const GROQ_KEY='REMOVED_USE_SERVER_ENV',GROQ_MODEL='openai/gpt-oss-20b';
+async function ask(){
+const x=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+GROQ_KEY},body:JSON.stringify({model:GROQ_MODEL,temperature:.6,max_tokens:1000,reasoning_effort:'low',messages:[{role:'system',content:SP},...msgs.slice(1).map(m=>({role:m.r=='u'?'user':'assistant',content:m.t}))]})});
+if(!x.ok){let m='';try{m=(await x.json()).error.message}catch{}throw new Error(x.status+(m?' - '+m:''))}
+const r=(((await x.json()).choices||[])[0]||{}).message,c=r&&(r.content||'').trim();if(!c)throw new Error('Empty reply from the AI');return c}
+const OKAY=/\b(i'?m|i am|im)\s+(ok|okay|alright|fine|safe|good|better)\b|\b(won'?t|not going to|never mind|joking|kidding)\b/i;
+async function send(i){const t=i.value.trim();if(!t||busy)return;i.value='';msgs.push({r:'u',t});busy=1;draw();let r,fb=0;
+try{r=await ask()}catch(e){fb=1;r=local(t)+'\n\n(The AI service could not be reached: '+(e&&e.message||'unknown error')+'. Showing built-in tips.)'}
+const m=/SEVERITY:\s*(HIGH|LOW)/i.exec(r);sev=m?m[1].toUpperCase():(sev||'LOW');
+if(HI.test(t)&&!OKAY.test(t))sev='HIGH';
+if(sev=='HIGH')peak='HIGH';
+r=r.replace(/SEVERITY:\s*(HIGH|LOW)\s*/i,'').trim();
+if(fb&&sev=='HIGH')r+="\n\nThis sounds serious, so I've marked it high priority for a human counselor. If you are in danger right now, tell a trusted adult, call 911, or call the NCMH Crisis Hotline at 1553.";
+busy=0;msgs.push({r:'b',t:r});draw()}
+function startThread(){const u=me();if(!u||u.role!='student'){location.hash='#/login';return}
+let t=db.threads.find(x=>x.uid==u.id&&x.open);if(!t){t={id:'t'+Date.now(),uid:u.id,alias:'Student-'+(1000+Math.random()*9000|0),sev:sev||'LOW',peak:peak||sev||'LOW',open:1,t:Date.now(),msgs:[]};db.threads.push(t);save()}location.hash=='#/portal'?route():location.hash='#/portal'}
+
+/* ---------- Anonymous thread helpers ---------- */
+const tm=(el,t,role)=>{el.innerHTML=t.msgs.map(m=>`<div class="m ${m.f==role?'u':'b'}">${esc(m.t)}</div>`).join('')||'<small>No messages yet.</small>';el.scrollTop=1e9};
+function post(id,f,i){const v=i.value.trim();if(!v)return;db.threads.find(x=>x.id==id).msgs.push({f,t:v,at:Date.now()});i.value='';save();live&&live()}
+
+/* ---------- Auth ---------- */
+function auth(role){let reg=0;const adm=role=='admin';const draw=()=>{
+app.innerHTML=`<div class="card" style="max-width:420px;margin:2rem auto"><h2>${adm?'Counselor':'Student'} ${reg?'registration':'login'}</h2><form id="f"><label>${adm?'Staff username':'Username (a nickname is fine)'}</label><input name="n" required minlength="3" autocomplete="username"><label>Password</label><input name="p" type="password" required minlength="6" autocomplete="${reg?'new':'current'}-password">${reg&&adm?'<label>Staff access code</label><input name="c" required><small>Demo code: UPHSD-STAFF</small>':''}<p class="err" id="e" role="alert"></p><button class="btn">${reg?'Create account':'Log in'}</button> <button type="button" class="btn o" id="t">${reg?'I have an account':'Create an account'}</button></form>${adm&&!reg?'<p><small>Demo counselor: counselor / counselor123</small></p>':''}${adm?'':'<p><small>Counselors never see your username in anonymous chats.</small></p>'}</div>`;
+$('#t').onclick=()=>{reg=!reg;draw()};
+$('#f').onsubmit=async ev=>{ev.preventDefault();const f=ev.target,n=f.n.value.trim().toLowerCase(),p=await h(f.p.value);let u=db.users.find(x=>x.name==n&&x.role==role);
+if(reg){if(u)return $('#e').textContent='That username is taken. Try another.';if(adm&&f.c.value!='UPHSD-STAFF')return $('#e').textContent='Staff access code is not valid.';u={id:'u'+Date.now(),role,name:n,pw:p};db.users.push(u);save()}
+else if(!u||u.pw!=p)return $('#e').textContent='Username or password is incorrect.';
+sessionStorage.me=u.id;location.hash=adm?'#/dashboard':'#/chat'}};draw()}
+
+/* ---------- Pages ---------- */
+R.home=()=>{app.innerHTML=`<section class="hero"><h1>Get help without anyone knowing.</h1><p>Talk to a coping assistant right now, then choose a private chat or a face-to-face visit with a UPHSD guidance counselor. No lines, no drop-boxes, no audience.</p><p><a class="btn g" href="#/chat">Talk to the assistant</a> <a class="btn o" href="#/appointment">Book a counselor</a></p><svg viewBox="0 0 600 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 62 Q75 -10 150 62 T300 62 T450 62 T600 62" fill="none" stroke="#FFD700" stroke-width="4"/></svg></section>
+<div class="grid" style="margin-top:1rem"><div class="card"><h3>Help in the first minute</h3><p>The assistant gives calming steps and flags whether your situation needs a counselor soon.</p></div><div class="card"><h3>Your name stays yours</h3><p>Anonymous chat uses a random alias. Counselors see the alias, not your username.</p></div><div class="card"><h3>People decide, not AI</h3><p>The assistant never blames anyone or replaces a counselor. Urgent cases go to a human first.</p></div></div>`};
+R.chat=()=>{app.innerHTML=`<div class="fc"><div class="fh"><div><b class="ft">Talk to the assistant</b><br><small>An AI helper, not a counselor. Private, and no names needed.</small></div></div>${chatHTML()}</div>`;
+wire(app);draw();$('.ci',app).focus();};
+R.appointment=()=>{const u=need('student');if(!u)return;
+app.innerHTML=`<div class="card"><h2>Face-to-face appointment</h2><p><small>Only counselors can read this. You may use a nickname.</small></p><form id="f"><div class="grid"><div><label>Name or nickname</label><input name="name"></div><div><label>Grade and section</label><input name="grade" required></div><div><label>Contact (optional)</label><input name="contact"></div><div><label>Concern</label><select name="concern"><option>Bullying<option>Cyberbullying<option>Peer pressure<option>Other</select></div><div><label>Case severity</label><select name="sev"><option value="LOW">Low priority<option value="HIGH" ${sev=='HIGH'?'selected':''}>High priority (urgent)</select></div><div><label>Available date</label><input type="date" name="date" required min="${new Date().toISOString().slice(0,10)}"></div><div><label>Available time</label><select name="slot"><option>Morning<option>Lunch break<option>Afternoon<option>After class</select></div></div><label>What is happening? You don't need to name anyone.</label><textarea name="details" rows="4" required></textarea><p><button class="btn">Send request</button></p></form></div>`;
+$('#f').onsubmit=e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));db.appts.push({...f,peak:peak||f.sev,id:'a'+Date.now(),uid:u.id,status:'New',t:Date.now()});save();
+app.innerHTML=`<div class="card"><h2>Request sent</h2><p>A counselor will confirm your schedule. Priority: <span class="badge ${f.sev}">${f.sev}</span></p><a class="btn" href="#/">Back home</a></div>`}};
+R.portal=()=>{const u=need('student');if(!u)return;const t=db.threads.find(x=>x.uid==u.id&&x.open);
+if(!t){app.innerHTML=`<div class="card"><h2>Anonymous chat with a counselor</h2><p>You'll get a random alias. Your username is never shown.</p><button class="btn" onclick="startThread()">Start anonymous chat</button></div>`;return}
+app.innerHTML=`<div class="card"><h2>Anonymous chat <small>You are ${t.alias}</small></h2><div class="log" id="tl"></div><div class="row"><input id="ti" placeholder="Message the counselor" aria-label="Message"><button class="btn" id="tb">Send</button></div></div>`;
+live=()=>{const x=db.threads.find(y=>y.id==t.id);tm($('#tl'),x,'student')};live();
+$('#tb').onclick=()=>post(t.id,'student',$('#ti'));$('#ti').onkeydown=e=>{if(e.key=='Enter')post(t.id,'student',$('#ti'))}};
+R.dashboard=()=>{if(!need('admin'))return;let tab='a';OT=null;
+app.innerHTML=`<h2>Triage dashboard</h2><div class="row"><button class="btn" id="ta">Appointments</button><button class="btn o" id="tc">Anonymous chats</button></div><div id="dl"></div><div id="tp"></div>`;
+const so=(a,b)=>(b.sev=='HIGH')-(a.sev=='HIGH')||b.t-a.t;
+const d=()=>{const A=[...db.appts].sort(so),T=[...db.threads].sort(so),hi=[...A.filter(a=>a.status!='Done'),...T].filter(x=>x.sev=='HIGH').length;
+$('#dl').innerHTML=`<p><b>${hi}</b> high-priority open. ${A.length} appointment requests. ${T.length} chats.</p>`+(tab=='a'?A.map(a=>`<div class="card"><span class="badge ${a.sev}">${a.sev}</span>${a.peak=='HIGH'&&a.sev!='HIGH'?' <small>(flagged HIGH earlier in the AI chat, later said they were okay)</small>':''} <b>${esc(a.name||'Anonymous')}</b>, ${esc(a.grade)}. ${esc(a.concern)}<p>${esc(a.details)}</p><small>Available ${esc(a.date)}, ${esc(a.slot)}. Contact: ${esc(a.contact||'none')}. Sent ${new Date(a.t).toLocaleString()}</small><br><select aria-label="Status" onchange="setSt('${a.id}',this.value)">${['New','Scheduled','Done'].map(s=>`<option${s==a.status?' selected':''}>${s}</option>`).join('')}</select></div>`).join('')||'<p>No appointment requests yet.</p>':T.map(t=>`<div class="card"><span class="badge ${t.sev}">${t.sev}</span>${t.peak=='HIGH'&&t.sev!='HIGH'?' <small>(flagged HIGH earlier in the AI chat, later said they were okay)</small>':''} <b>${t.alias}</b>, ${t.msgs.length} messages <button class="btn o" onclick="openT('${t.id}')">Open chat</button></div>`).join('')||'<p>No anonymous chats yet.</p>')};
+window.setSt=(id,v)=>{db.appts.find(a=>a.id==id).status=v;save();d()};
+window.openT=id=>{OT=id;$('#tp').innerHTML=`<div class="card"><h3 id="th"></h3><div class="log" id="tl"></div><div class="row"><input id="ti" placeholder="Reply as counselor" aria-label="Reply"><button class="btn" id="tb">Send reply</button></div></div>`;
+$('#tb').onclick=()=>post(id,'admin',$('#ti'));$('#ti').onkeydown=e=>{if(e.key=='Enter')post(id,'admin',$('#ti'))};live()};
+live=()=>{d();if(OT){const t=db.threads.find(x=>x.id==OT);$('#th').textContent=t.alias+' ('+t.sev+' priority)';tm($('#tl'),t,'admin')}};
+$('#ta').onclick=()=>{tab='a';d()};$('#tc').onclick=()=>{tab='c';d()};live()};
+R.login=()=>auth('student');R.admin=()=>auth('admin');R.out=()=>{delete sessionStorage.me;location.hash='#/'};
+
+/* ---------- Router + boot ---------- */
+function nav(p){const u=me();$('nav').innerHTML=[['','Home'],['chat','AI chat'],['appointment','Appointment'],['portal','Anonymous chat'],...(u&&u.role=='admin'?[['dashboard','Dashboard']]:[]),...(u?[['out','Log out ('+esc(u.name)+')']]:[['login','Student login'],['admin','Counselor login']])].map(([k,l])=>`<a href="#/${k}"${'#/'+k=='#/'+(p=='home'?'':p)?' class="on"':''}>${l}</a>`).join('')}
+function route(){const p=location.hash.slice(2)||'home';live=null;document.body.classList.toggle('full',p=='chat');$('#wid').classList.remove('open');nav(p);(R[p]||R.home)();scrollTo(0,0)}
+document.body.insertAdjacentHTML('beforeend',`<button id="fab" aria-label="Open GuidanceBridge assistant">💬</button><div id="wid"><div class="card"><b style="color:var(--m)">GuidanceBridge assistant</b>${chatHTML()}</div></div>`);
+$('#fab').onclick=()=>{$('#wid').classList.toggle('open');draw()};wire($('#wid'));draw();
+addEventListener('hashchange',route);
+addEventListener('storage',e=>{if(e.key==KEY){db=JSON.parse(e.newValue);live&&live()}});
+(async()=>{if(!db.users.some(u=>u.role=='admin')){db.users.push({id:'c1',role:'admin',name:'counselor',pw:await h('counselor123')});save()}route()})();
+</script></body></html>
