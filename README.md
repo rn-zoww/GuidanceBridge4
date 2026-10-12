@@ -18,6 +18,17 @@ The assistant's face is a book-shaped mascot (maroon book, gold graduation cap, 
 
 The drawing and its expressions live in `index.html` (`MASCOT_SVG`, and the `assistant mascot` block in the CSS). The mood instruction sent to the AI is in `api/_lib/chat-core.js`.
 
+## Private journal / evidence locker
+
+Students can keep time-stamped notes and screenshots at `#/journal` (**Private journal** in the menu). No account is needed.
+
+- The journal is locked with a passphrase the student chooses. Entries and screenshots are encrypted in the browser (AES-GCM, key derived from the passphrase with PBKDF2) before they are saved to `localStorage`, so nothing readable is stored.
+- The key is kept in memory only. The journal locks again when the student leaves the page, and there is no passphrase recovery: a forgotten passphrase means erasing the journal and starting over.
+- Entries stay on that device. A counselor sees one only if the student presses **Share with a counselor**, which copies that single entry into the student's anonymous chat (under their alias). The shared copy is no longer encrypted and cannot be taken back.
+- Screenshots are scaled down to JPEG so several fit in the browser's storage (about 5 MB in total, shared with the rest of the site's data).
+
+The code is in `index.html`: the `JN` helpers and `R.journal`.
+
 ## Project structure
 
 | Path | What it is |
@@ -39,6 +50,7 @@ The Groq API key is **never** stored in this repository or sent to the browser. 
 3. Under **Environment Variables**, add:
    - `GROQ_API_KEY` = your Groq key (from [console.groq.com/keys](https://console.groq.com/keys))
    - Optional: `GROQ_MODEL` (defaults to `openai/gpt-oss-20b`)
+   - Optional: `GROQ_FALLBACK_MODEL` (defaults to `openai/gpt-oss-120b`). If the main model fails twice in a row, for example with Groq's "Tool choice is none, but model called a tool" error, this model answers instead.
 4. Click **Deploy**. Every later push to GitHub redeploys automatically.
 
 If you change the key later, update it in Vercel's Environment Variables and redeploy.

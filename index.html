@@ -126,6 +126,9 @@ section.block{padding:84px 0}
 .hm-head p{color:var(--muted);margin:0}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 @media(max-width:800px){.grid3{grid-template-columns:1fr;gap:16px}}
+.grid4{grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:1080px){.grid4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid4{grid-template-columns:1fr;gap:16px}}
 .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-sm)}
 @media(max-width:600px){.card{padding:22px}}
 .card h3{margin-bottom:.4em}
@@ -192,8 +195,8 @@ footer.site-footer{border-top:1px solid var(--line);background:#fffaf8;padding:5
 label.f,.f{display:block;font-weight:600;font-size:.92rem;margin:0 0 8px}
 .hint{font-size:.84rem;color:var(--muted);font-weight:400;margin-top:4px}
 .opt{color:var(--muted);font-weight:400}
-input[type=text],input[type=password],input[type=date],select,textarea{width:100%;min-width:0;font:inherit;font-size:1rem;padding:13px 16px;border:1px solid #dccaca;border-radius:16px;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none}
-input[type=date]{min-height:50px}
+input[type=text],input[type=password],input[type=date],input[type=datetime-local],select,textarea{width:100%;min-width:0;font:inherit;font-size:1rem;padding:13px 16px;border:1px solid #dccaca;border-radius:16px;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none}
+input[type=date],input[type=datetime-local]{min-height:50px}
 select{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23800000' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 16px center;padding-right:40px}
 input:focus,select:focus,textarea:focus{border-color:var(--maroon);box-shadow:0 0 0 4px rgba(128,0,0,.1);outline:none}
 textarea{resize:vertical;min-height:110px}
@@ -219,7 +222,7 @@ textarea{resize:vertical;min-height:110px}
 .badge.high{background:var(--maroon);color:#fff}
 .badge.high::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
 .badge.low{background:var(--maroon-tint);color:var(--maroon);border:1px solid var(--maroon-tint-2)}
-.badge.stat{background:#f6f1f1;color:#4a3d40;text-transform:none;letter-spacing:0;font-weight:600;white-space:normal}
+.badge.stat{background:#f6f1f1;color:#4a3d40;text-transform:none;letter-spacing:0;font-weight:600;white-space:normal;padding:4px 11px;border:0;border-radius:999px}
 .badge.ok{background:#eaf6ec;color:#1d5c2a;text-transform:none;letter-spacing:0;font-weight:600}
 .badge.gold{background:#fff;border:1px solid var(--line);color:var(--maroon);text-transform:none;letter-spacing:0;font-size:.85rem}
 .badge.gold::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
@@ -306,6 +309,7 @@ body.full #widget,body.staff #widget{display:none}
 .panel .min{position:absolute;top:16px;right:14px;border:0;background:var(--maroon-tint);color:var(--maroon);width:36px;height:36px;border-radius:50%;cursor:pointer;display:grid;place-items:center;z-index:2}
 .panel .chat-head{padding-right:58px}
 .panel .chat-head .status{display:none}
+@media(max-width:360px){.panel .chat-head .avatar{display:none}}
 @media(max-width:520px){
   .fab{right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));padding:14px 20px}
   .panel{inset:0;width:auto;height:auto;border-radius:0;border:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -347,13 +351,13 @@ body.full #widget,body.staff #widget{display:none}
 .item:hover{border-color:var(--maroon)}
 .item.sel{border-color:var(--maroon);box-shadow:0 0 0 3px rgba(128,0,0,.12)}
 .item.done{opacity:.7}
-.item .top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:6px}
-.item b{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 10px;align-items:center;margin-bottom:6px}
+.item b{flex:1 1 0;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .item small{color:var(--muted);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .item .top small{flex:none}
 .detail{background:#fff;border:1px solid var(--line);border-radius:28px;padding:28px;min-height:320px;box-shadow:var(--shadow-sm)}
 @media(max-width:600px){.detail{padding:18px;border-radius:22px}}
-.d-back{display:none;margin-bottom:14px}
+.d-back{display:none;margin-bottom:8px;padding:8px 0}
 @media(max-width:900px){.d-back{display:inline-block}}
 .d-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
 .d-head h2{font-size:1.6rem;margin:0;overflow-wrap:anywhere}
@@ -366,11 +370,12 @@ body.full #widget,body.staff #widget{display:none}
 @media(max-width:600px){.msgs{max-height:60dvh}.msgs .bubble{max-width:92%}}
 .reply-form{display:flex;gap:8px;align-items:flex-end;margin-top:8px}
 .reply-form textarea{min-height:56px}
+.reply-form .btn{flex:none;white-space:nowrap}
 @media(max-width:480px){.reply-form{flex-direction:column;align-items:stretch}}
 .d-actions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
 .btn-danger{background:#fff;color:#b00020;border-color:#e3a3ad}
 .btn-danger:hover{background:#b00020;color:#fff;border-color:#b00020}
-@media(max-width:480px){.d-actions .btn{flex:1}}
+@media(max-width:480px){.d-actions .btn{flex:1 1 calc(50% - 5px)}}
 .empty{text-align:center;color:var(--muted);padding:40px 10px}
 
 /* counselor full-page views (one request / one anonymous chat) */
@@ -515,21 +520,50 @@ body.full #progress{display:none}
 @media(max-width:480px){.play{width:60px;height:60px;margin:-30px 0 0 -30px}.play::before{left:24px;top:18px;border-width:12px 0 12px 18px}.vid-main{border-radius:18px}.vid-cap{left:14px;right:14px;bottom:12px}}
 
 /* breathing exercise */
-.breathe-sec{background:radial-gradient(ellipse at 15% 30%,#fff3c4 0,transparent 45%),#fff}
+.breathe-sec{background:radial-gradient(ellipse at 15% 30%,#fff3c4 0,transparent 45%),#fff;overflow:clip}
 .breathe-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
 .breathe{display:grid;place-items:center}
 .br-ring{position:relative;width:min(300px,78vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#fff 58%,var(--maroon-tint) 59%)}
 .br-ring::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px dashed #e9c95a;animation:spin 40s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.br-core{position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a32020,var(--maroon) 60%,var(--maroon-dark));box-shadow:0 20px 50px -18px rgba(128,0,0,.7),0 0 0 14px rgba(128,0,0,.06);transform:scale(.62);transition:transform 4s ease-in-out}
+.br-core{position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a32020,var(--maroon) 60%,var(--maroon-dark));box-shadow:0 20px 50px -18px rgba(128,0,0,.7),0 0 0 14px rgba(128,0,0,.06);transform:scale(.7);transition:transform 4s ease-in-out}
 .br-core.idle{animation:breatheIdle 6s ease-in-out infinite}
 .br-core.in,.br-core.hold{transform:scale(1)}
-.br-core.out{transform:scale(.62)}
-@keyframes breatheIdle{0%,100%{transform:scale(.62)}50%{transform:scale(.72)}}
-.br-label{position:relative;z-index:1;text-align:center;color:#fff;pointer-events:none;padding:0 20px}
-.br-label b{display:block;font-family:var(--font-head);font-size:1.45rem;font-weight:600;line-height:1.2}
-.br-label small{font-size:.8rem;opacity:.85}
+.br-core.out{transform:scale(.7)}
+@keyframes breatheIdle{0%,100%{transform:scale(.7)}50%{transform:scale(.78)}}
+/* the label must fit inside the circle at its smallest (70% of the core, about half the ring), so it is
+   kept to 44% of the ring and its type shrinks with the ring on narrow phones */
+.br-label{position:relative;z-index:1;width:44%;text-align:center;color:#fff;pointer-events:none;text-wrap:balance}
+.br-label b{display:block;font-family:var(--font-head);font-size:min(1.15rem,4.8vw);font-weight:600;line-height:1.2}
+.br-label small{display:block;margin-top:3px;font-size:min(.75rem,3.4vw);line-height:1.3;opacity:.9}
 @media(max-width:800px){.breathe-grid{grid-template-columns:1fr;gap:28px;text-align:center}.breathe-grid .btn{width:100%;max-width:320px}}
+
+/* private journal / evidence locker */
+.j-head{display:flex;gap:12px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px}
+.j-head h1{margin:0}
+.j-facts{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:12px}
+.j-facts li{display:flex;gap:12px;align-items:flex-start;font-size:.95rem;line-height:1.5;color:#4a3d40}
+.j-facts .ci{flex:none;width:34px;height:34px;border-radius:11px;background:var(--maroon-tint);color:var(--maroon);display:grid;place-items:center}
+.j-pick{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.j-pick .hint{margin:0;flex:1 1 180px;overflow-wrap:anywhere}
+.j-pick input:focus-visible+label{outline:3px solid rgba(128,0,0,.35);outline-offset:2px}
+.j-preview{flex:1 1 100%;display:flex;align-items:center;gap:12px}
+.j-preview img{width:72px;height:72px;object-fit:cover;border-radius:14px;border:1px solid var(--line);flex:none}
+.j-list{display:grid;gap:16px;margin-top:32px}
+.j-list>h2{font-size:1.5rem;margin:0}
+.j-entry{min-width:0}
+.j-top{display:flex;gap:8px 12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.j-top h3{margin:0;font-size:1.25rem;min-width:0;overflow-wrap:anywhere}
+.j-when{margin:6px 0 14px;font-size:.85rem;color:var(--muted)}
+.j-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65}
+.j-img{display:block;max-width:100%;max-height:320px;margin-top:14px;border-radius:14px;border:1px solid var(--line);cursor:zoom-in}
+.j-img.big{max-height:none;cursor:zoom-out}
+/* a journal entry the student shared, shown inside a chat bubble (student and counselor views) */
+.j-att{display:block;margin-top:8px;padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);color:var(--ink);white-space:normal}
+.j-att b{display:block;color:var(--maroon);line-height:1.3;overflow-wrap:anywhere}
+.j-att small{display:block;color:var(--muted);font-size:.76rem;line-height:1.4;margin:2px 0 8px}
+.j-att .j-text{display:block;font-size:.94rem;line-height:1.55}
+.j-att img{display:block;max-width:100%;max-height:360px;margin-top:10px;border-radius:10px;border:1px solid var(--line)}
 
 /* hamburger morphs into an X when the menu opens */
 .hb{position:relative;display:block;width:20px;height:14px}
@@ -724,6 +758,7 @@ const app = $('#app');
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const md = t => esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 const fmt = t => t ? new Date(t).toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}) : '';
+const fmtFull = t => t ? new Date(t).toLocaleString([], {dateStyle:'medium', timeStyle:'short'}) : '';
 const box = get => { const mem = {}; return {
   get(k){ try { return get().getItem(k); } catch(e){ return k in mem ? mem[k] : null; } },
   set(k, v){ try { get().setItem(k, v); } catch(e){ mem[k] = String(v); } },
@@ -754,7 +789,10 @@ const ICON = {
   pin: svg('<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>'),
   phone: svg('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>'),
   mail: svg('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7l8.5 6 8.5-6"/>'),
-  globe: svg('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>')
+  globe: svg('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'),
+  lock: svg('<rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
+  clock: svg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+  share: svg('<path d="M4 12v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6M12 15V4M8 8l4-4 4 4"/>')
 };
 // Official University of Perpetual Help System DALTA seal (embedded in CONFIG.LOGO_SRC).
 const LOGO = (h = 48, alt = '') => `<img src="${CONFIG.LOGO_SRC}" alt="${esc(alt)}" height="${h}" width="${Math.round(h * 209 / 300)}">`;
@@ -1105,13 +1143,14 @@ function mountChat(root, id, full){
   return { focus: () => ta.focus(), destroy: () => { chatViews.delete(draw); mascotViews.delete(showMood); } };
 }
 
-function startThread(){
-  closeWidget();
+// The student's open anonymous chat, created (with a new alias) if they don't have one.
+function ensureThread(){
   const uid = studentId();
   let t = db.threads.find(x => x.uid === uid && x.open);
   if (!t) { t = {id:'t' + Date.now(), uid, alias:makeAlias(), sev:sev || 'LOW', peak:peak || sev || 'LOW', open:1, t:Date.now(), msgs:[]}; db.threads.push(t); save(); }
-  go('#/portal');
+  return t;
 }
+function startThread(){ closeWidget(); ensureThread(); go('#/portal'); }
 
 /* floating widget (every page except the full chat page) */
 function buildWidget(){
@@ -1130,9 +1169,11 @@ function buildWidget(){
 function closeWidget(){ const p = $('#panel'); if (p) { p.classList.remove('open'); document.body.classList.remove('wopen'); $('#fab').setAttribute('aria-expanded', 'false'); } }
 
 /* ============================ ANONYMOUS THREAD HELPERS ============================ */
+// A journal entry the student chose to share. Only images this page made itself (JPEG data URLs) are shown.
+const jAtt = j => `<span class="j-att"><b>📔 ${esc(j.title || 'Journal entry')}</b><small>Saved ${esc(fmtFull(j.saved))}${j.when ? ' · Happened ' + esc(fmtFull(j.when)) : ''}</small>${j.text ? `<span class="j-text">${esc(j.text)}</span>` : ''}${/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(j.img || '') ? `<img src="${j.img}" alt="Screenshot shared by the student">` : ''}</span>`;
 function tm(el, t, role, intro){
   if (!el) return;
-  el.innerHTML = (intro || '') + (t.msgs.map(m => `<div class="bubble ${m.f === role ? 'me' : 'them'}">${esc(m.t)}<span class="cap">${m.f === 'admin' ? 'Counselor' : esc(t.alias)} · ${esc(fmt(m.at))}</span></div>`).join('') || (intro ? '' : '<div class="empty">No messages yet.</div>'));
+  el.innerHTML = (intro || '') + (t.msgs.map(m => `<div class="bubble ${m.f === role ? 'me' : 'them'}">${esc(m.t)}${m.j ? jAtt(m.j) : ''}<span class="cap">${m.f === 'admin' ? 'Counselor' : esc(t.alias)} · ${esc(fmt(m.at))}</span></div>`).join('') || (intro ? '' : '<div class="empty">No messages yet.</div>'));
   el.scrollTop = el.scrollHeight;
 }
 function post(id, f, text){
@@ -1171,6 +1212,7 @@ const footer = () => `
           <li><a href="#/chat">Talk to the assistant</a></li>
           <li><a href="#/appointment">Book a counselor</a></li>
           <li><a href="#/portal">Anonymous chat</a></li>
+          <li><a href="#/journal">Private journal</a></li>
           <li><a href="#breathe" data-home="breathe">Breathing exercise</a></li>
         </ul>
       </div>`}
@@ -1230,10 +1272,11 @@ R.home = () => {
 
   <section class="block" id="support"><div class="wrap">
     <div class="hm-head reveal"><div class="hm-kicker">A bridge to support</div><h2>Support that starts with you.</h2><p>You choose how to begin. GuidanceBridge offers a calm first step and helps you reach the right human support.</p></div>
-    <div class="grid3">
+    <div class="grid3 grid4">
       <a class="card option-card reveal" href="#/chat"><div class="hm-ico">🌱</div><h3>Help in the first minute</h3><p>The assistant gives calming steps and flags whether your situation needs a counselor soon.</p><span class="go">Talk to the assistant →</span></a>
       <a class="card option-card reveal" href="#/portal"><div class="hm-ico">🛡️</div><h3>Your name stays yours</h3><p>Anonymous chat uses a random alias. Counselors see the alias, not your username.</p><span class="go">Start an anonymous chat →</span></a>
       <a class="card option-card reveal" href="#/appointment"><div class="hm-ico">🤝</div><h3>People decide, not AI</h3><p>The assistant never blames anyone or replaces a counselor. Urgent cases go to a human first.</p><span class="go">Book a face-to-face visit →</span></a>
+      <a class="card option-card reveal" href="#/journal"><div class="hm-ico">📔</div><h3>Keep your own record</h3><p>A passphrase-locked journal for notes and screenshots. It stays on this device unless you share an entry.</p><span class="go">Open your private journal →</span></a>
     </div>
   </div></section>
 
@@ -1428,6 +1471,187 @@ R.portal = () => {
   form.addEventListener('submit', e => { e.preventDefault(); post(t.id, 'student', ta.value); ta.value = ''; ta.style.height = ''; });
   ta.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && matchMedia('(pointer:fine)').matches) { e.preventDefault(); form.requestSubmit(); } });
   ta.addEventListener('input', () => { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; });
+};
+
+/* ============================ PRIVATE JOURNAL / EVIDENCE LOCKER ============================ */
+// Notes and screenshots are encrypted in this browser with AES-GCM before they are saved. The key is made from
+// the student's passphrase (PBKDF2) and is only held in memory while the journal page is open, so nothing
+// readable is stored and nobody else can open it. A counselor sees an entry only if the student shares it,
+// which copies that one entry into the student's anonymous chat.
+const JN = {
+  ITER: 250000,
+  slot: uid => 'gb_journal:' + uid,
+  b64: u8 => { let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); },
+  u8: s => Uint8Array.from(atob(s), c => c.charCodeAt(0)),
+  load: uid => { try { return JSON.parse(localStorage.getItem(JN.slot(uid))); } catch(e){ return null; } },
+  // Returns false when the browser refuses (storage full or blocked), so the page can say so instead of losing the entry.
+  store: (uid, data) => { try { localStorage.setItem(JN.slot(uid), JSON.stringify(data)); return true; } catch(e){ return false; } },
+  async key(pass, salt, iter){
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({name:'PBKDF2', hash:'SHA-256', salt, iterations:iter}, base, {name:'AES-GCM', length:256}, false, ['encrypt', 'decrypt']);
+  },
+  async seal(key, bytes){ const iv = crypto.getRandomValues(new Uint8Array(12)); return {iv:JN.b64(iv), ct:JN.b64(new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, bytes)))}; },
+  async open(key, x){ return new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM', iv:JN.u8(x.iv)}, key, JN.u8(x.ct))); },
+  sealJSON: (key, o) => JN.seal(key, new TextEncoder().encode(JSON.stringify(o))),
+  openJSON: async (key, x) => JSON.parse(new TextDecoder().decode(await JN.open(key, x))),
+  // Screenshots are scaled down and saved as JPEG so a handful of them fit in the browser's storage.
+  async shrink(file){
+    const bmp = await createImageBitmap(file), k = Math.min(1, 1280 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(bmp.width * k)); c.height = Math.max(1, Math.round(bmp.height * k));
+    const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .75));
+    return new Uint8Array(await blob.arrayBuffer());
+  },
+  url: bytes => 'data:image/jpeg;base64,' + JN.b64(bytes)
+};
+
+R.journal = () => {
+  const uid = studentId();
+  // Decrypted entries and the key live in these variables only, and are dropped when the student leaves the page.
+  let key = null, data = null, entries = [], shot = null;
+  cleanup = () => { key = null; data = null; entries = []; shot = null; };
+  const page = inner => { app.innerHTML = `<div class="narrow page-pad"><span class="eyebrow"><i></i> Private journal</span>${inner}</div>${footer()}`; };
+  const err = m => { const e = $('#j-err'); e.innerHTML = m ? `<div class="err" role="alert">${esc(m)}</div>` : ''; if (m) e.scrollIntoView({behavior:'smooth', block:'center'}); };
+  const FULL = 'This browser has no storage space left for the journal. Delete an older entry or screenshot and try again.';
+  if (!(window.crypto && crypto.subtle)) {
+    page(`<h1 class="page-h1">Your private journal</h1><div class="form-card"><p style="margin:0">The journal encrypts everything you write, and this browser only allows that on a secure (https) connection. Please open GuidanceBridge through its normal web address and try again.</p></div>`);
+    return;
+  }
+
+  // Locked: create a passphrase the first time, or enter it to open the journal.
+  function gate(){
+    key = null; entries = []; shot = null;
+    data = JN.load(uid);
+    const fresh = !data;
+    page(`<h1 class="page-h1">Your private journal</h1>
+      <p class="lead" style="font-size:1.05rem">Write down what happened and keep screenshots as evidence. Each entry is saved with its date and time, and locked with a passphrase only you know.</p>
+      <form class="form-card" id="j-gate" novalidate>
+        <div id="j-err"></div>
+        ${fresh ? `<ul class="j-facts">
+          <li><span class="ci">${ICON.lock}</span><span><b>Encrypted on this device.</b> Entries never leave this browser, and counselors cannot see them.</span></li>
+          <li><span class="ci">${ICON.clock}</span><span><b>Time-stamped automatically.</b> A clear record helps if you decide to ask for help later.</span></li>
+          <li><span class="ci">${ICON.share}</span><span><b>Shared only if you choose.</b> You can send a single entry to a counselor through your anonymous chat.</span></li>
+        </ul>` : ''}
+        <div class="field"><label class="f" for="j-pass">${fresh ? 'Create a passphrase' : 'Passphrase'}</label><input id="j-pass" type="password" autocomplete="${fresh ? 'new' : 'current'}-password" required>${fresh ? '<div class="hint">At least 6 characters. A short sentence is easy to remember.</div>' : ''}</div>
+        ${fresh ? '<div class="field"><label class="f" for="j-pass2">Type it again</label><input id="j-pass2" type="password" autocomplete="new-password" required></div>' : ''}
+        <button class="btn btn-primary btn-block" type="submit" id="j-go">${fresh ? 'Create my journal' : 'Unlock journal'}</button>
+        ${fresh ? '<p class="fine">There is no “forgot passphrase”. Without it, nobody can open the journal, not even a counselor.</p>'
+                : '<p class="switch">Forgot it? <button type="button" class="linkbtn" id="j-reset">Erase this journal and start over</button></p>'}
+      </form>`);
+    if (!fresh) $('#j-reset').onclick = () => {
+      if (!confirm('Erase the whole journal on this device? Every entry and screenshot in it will be deleted. This cannot be undone.')) return;
+      try { localStorage.removeItem(JN.slot(uid)); } catch(e){}
+      toast('Journal erased'); gate();
+    };
+    $('#j-gate').addEventListener('submit', async e => {
+      e.preventDefault();
+      const pass = $('#j-pass').value, btn = $('#j-go');
+      if (fresh && pass.length < 6) return err('The passphrase needs at least 6 characters.');
+      if (fresh && pass !== $('#j-pass2').value) return err('The two passphrases do not match.');
+      if (!pass) return err('Please enter your passphrase.');
+      btn.disabled = true; err('');
+      try {
+        if (fresh) {
+          const salt = crypto.getRandomValues(new Uint8Array(16));
+          const k = await JN.key(pass, salt, JN.ITER);
+          const d = {v:1, salt:JN.b64(salt), iter:JN.ITER, check:await JN.sealJSON(k, {ok:1}), entries:[]};
+          if (!JN.store(uid, d)) { btn.disabled = false; return err('This browser would not save the journal. Check that it is not in private browsing mode.'); }
+          key = k; data = d;
+        } else {
+          const k = await JN.key(pass, JN.u8(data.salt), data.iter);
+          try { await JN.openJSON(k, data.check); } catch(x){ btn.disabled = false; return err('That passphrase does not match. Please try again.'); }
+          const list = [];
+          for (const s of data.entries) list.push({...await JN.openJSON(k, s.body), id:s.id, img:s.img ? JN.url(await JN.open(k, s.img)) : ''});
+          key = k; entries = list;
+        }
+      } catch(x){ btn.disabled = false; return err('The journal could not be opened in this browser.'); }
+      if (location.hash.slice(2).split('?')[0] === 'journal') locker();
+    });
+  }
+
+  // Unlocked: add an entry, and read, share or delete saved ones.
+  function locker(){
+    page(`<div class="j-head"><h1 class="page-h1">Your private journal</h1><button class="btn btn-outline btn-sm" id="j-lock" type="button">Lock journal</button></div>
+      <p class="muted" style="margin-bottom:24px">Unlocked on this device only. It locks again when you leave this page.</p>
+      <form class="form-card" id="j-form" novalidate>
+        <div id="j-err"></div>
+        <div class="row2">
+          <div class="field"><label class="f" for="j-title">Title <span class="opt">(optional)</span></label><input id="j-title" type="text" maxlength="80" placeholder="e.g. Group chat, Monday"></div>
+          <div class="field"><label class="f" for="j-when">When it happened <span class="opt">(optional)</span></label><input id="j-when" type="datetime-local"></div>
+        </div>
+        <div class="field"><label class="f" for="j-text">What happened?</label><textarea id="j-text" rows="5" maxlength="4000" placeholder="Write it in your own words. You don't need to name anyone."></textarea></div>
+        <div class="field j-pick">
+          <input class="sr" type="file" id="j-file" accept="image/*"><label class="btn btn-outline btn-sm" for="j-file">Add a screenshot or photo</label>
+          <span class="hint" id="j-fname">Optional. One image per entry.</span>
+          <div class="j-preview" id="j-preview" hidden></div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" id="j-save">Save to journal</button>
+        <p class="fine">The date and time are added for you. This is your own record, not a formal report.</p>
+      </form>
+      <div class="j-list" id="j-list"></div>`);
+    $('#j-when').max = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    $('#j-lock').onclick = () => { gate(); toast('Journal locked'); };
+    const clearShot = () => { shot = null; $('#j-file').value = ''; $('#j-preview').hidden = true; $('#j-preview').innerHTML = ''; $('#j-fname').textContent = 'Optional. One image per entry.'; };
+    $('#j-file').addEventListener('change', async e => {
+      const file = e.target.files[0]; if (!file) return;
+      err('');
+      if (!file.type.startsWith('image/') || file.size > 15 * 1024 * 1024) { clearShot(); return err('Please choose an image file smaller than 15 MB.'); }
+      try { shot = await JN.shrink(file); } catch(x){ clearShot(); return err('That image could not be read. Try a PNG or JPEG screenshot.'); }
+      if (!$('#j-preview')) return;
+      $('#j-fname').textContent = file.name;
+      $('#j-preview').innerHTML = `<img src="${JN.url(shot)}" alt="Screenshot to be saved"><button type="button" class="linkbtn" id="j-unpick">Remove image</button>`;
+      $('#j-preview').hidden = false;
+      $('#j-unpick').onclick = clearShot;
+    });
+    $('#j-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const title = $('#j-title').value.trim(), text = $('#j-text').value.trim(), when = Date.parse($('#j-when').value) || 0;
+      if (!text && !shot) return err('Write a note or add a screenshot first.');
+      if (when > Date.now() + 60000) return err('“When it happened” cannot be in the future.');
+      const btn = $('#j-save'); btn.disabled = true; err('');
+      const body = {title, text, when, at:Date.now(), shared:0}, id = 'j' + body.at;
+      const saved = {id, body:await JN.sealJSON(key, body)};
+      if (shot) saved.img = await JN.seal(key, shot);
+      data.entries.unshift(saved);
+      if (!JN.store(uid, data)) { data.entries.shift(); btn.disabled = false; return err(FULL); }
+      entries.unshift({...body, id, img:shot ? JN.url(shot) : ''});
+      e.target.reset(); clearShot(); btn.disabled = false;
+      draw(); toast('Saved to your journal');
+    });
+    $('#j-list').addEventListener('click', async e => {
+      const img = e.target.closest('.j-img'); if (img) return img.classList.toggle('big');
+      const b = e.target.closest('button[data-act]'); if (!b) return;
+      const x = entries.find(y => y.id === b.dataset.id), i = data.entries.findIndex(y => y.id === b.dataset.id);
+      if (!x || i < 0) return;
+      if (b.dataset.act === 'del') {
+        if (!confirm('Delete this journal entry? This cannot be undone.' + (x.shared ? '\n\nThe copy you shared with a counselor stays in your chat.' : ''))) return;
+        const [gone] = data.entries.splice(i, 1);
+        if (!JN.store(uid, data)) { data.entries.splice(i, 0, gone); return toast('Could not delete the entry'); }
+        entries.splice(entries.indexOf(x), 1); draw(); toast('Entry deleted');
+      } else {
+        if (!confirm('Share this entry with a guidance counselor?\n\nA copy goes into your anonymous chat. The counselor sees your alias, not your name. Once shared, the copy cannot be taken back.')) return;
+        const t = ensureThread();
+        t.msgs.push({f:'student', t:'Shared from my private journal', at:Date.now(), j:{title:x.title, text:x.text, when:x.when, saved:x.at, img:x.img}});
+        try { localStorage.setItem(KEY, JSON.stringify(db)); } catch(q){ t.msgs.pop(); return toast('Not enough storage space to share this entry'); }
+        x.shared = Date.now();
+        const {id, img:_, ...body} = x;
+        data.entries[i].body = await JN.sealJSON(key, body); JN.store(uid, data);
+        draw(); toast('Shared with a counselor as ' + t.alias);
+      }
+    });
+    draw();
+  }
+  function draw(){
+    const l = $('#j-list'); if (!l) return;
+    l.innerHTML = `<h2>Saved entries${entries.length ? ` (${entries.length})` : ''}</h2>` + (entries.map(x => `<article class="case-card j-entry">
+        <div class="j-top"><h3>${esc(x.title || 'Journal entry')}</h3><span class="badge ${x.shared ? 'ok' : 'stat'}">${x.shared ? 'Shared ' + esc(fmt(x.shared)) : 'Only you can see this'}</span></div>
+        <p class="j-when">Saved ${esc(fmtFull(x.at))}${x.when ? ' · Happened ' + esc(fmtFull(x.when)) : ''}</p>
+        ${x.text ? `<div class="j-text">${esc(x.text)}</div>` : ''}
+        ${x.img ? `<img class="j-img" src="${x.img}" alt="Saved screenshot" title="Click to enlarge">` : ''}
+        <div class="d-actions"><button class="btn btn-outline btn-sm" type="button" data-act="share" data-id="${esc(x.id)}">${x.shared ? 'Share again' : 'Share with a counselor'}</button>${x.shared ? '<a class="btn btn-outline btn-sm" href="#/portal">Open my chat</a>' : ''}<button class="btn btn-danger btn-sm" type="button" data-act="del" data-id="${esc(x.id)}">Delete</button></div>
+      </article>`).join('') || '<div class="empty">Nothing saved yet. Your first entry will appear here.</div>');
+  }
+  gate();
 };
 
 R.dashboard = () => {
@@ -1693,9 +1917,9 @@ R.admin = () => auth('admin');
 R.out = () => { SS.del('gb_me'); go('#/'); };
 
 /* ============================ ROUTER + BOOT ============================ */
-const TITLES = {home:'UPHSD Guidance Services', chat:'Talk to the assistant', appointment:'Book a counselor', portal:'Anonymous chat', dashboard:'Triage dashboard', request:'Appointment request', thread:'Anonymous chat (counselor)', login:'Student sign in', admin:'Counselor portal'};
+const TITLES = {home:'UPHSD Guidance Services', chat:'Talk to the assistant', appointment:'Book a counselor', portal:'Anonymous chat', journal:'Private journal', dashboard:'Triage dashboard', request:'Appointment request', thread:'Anonymous chat (counselor)', login:'Student sign in', admin:'Counselor portal'};
 // Students and counselors get separate experiences: separate menus, footers and pages.
-const STUDENT_VIEWS = ['home', 'chat', 'appointment', 'portal', 'login'];
+const STUDENT_VIEWS = ['home', 'chat', 'appointment', 'portal', 'journal', 'login'];
 const isStaff = () => { const u = me(); return !!u && u.role === 'admin'; };
 function renderNav(p){
   const u = me(), staff = isStaff();
@@ -1703,7 +1927,7 @@ function renderNav(p){
   const a = ([k, l]) => `<a href="#/${k}"${p === k ? ' class="on" aria-current="page"' : ''}>${l}</a>`;
   const links = staff
     ? a(['dashboard', 'Triage dashboard']) + `<a href="#/out">Sign out (${esc(u.name)})</a>`
-    : [['chat','AI chat'], ['appointment','Book a counselor'], ['portal','Anonymous chat']].map(a).join('')
+    : [['chat','AI chat'], ['appointment','Book a counselor'], ['portal','Anonymous chat'], ['journal','Private journal']].map(a).join('')
       + '<a href="#/" id="nav-contact">Contact us</a>'
       + (u ? `<a href="#/out">Sign out (${esc(u.name)})</a>` : '');
   $('#nav').innerHTML = `
