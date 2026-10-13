@@ -36,11 +36,28 @@ The code is in `index.html`: the `JN` helpers and `R.journal`.
 | `index.html` | The whole website (single page, no build step) |
 | `api/chat.js` | Vercel serverless function: `POST /api/chat` |
 | `api/_lib/chat-core.js` | Shared AI logic: system prompt, input checks, Groq call |
-| `server.js` | Local server for development (serves the site + `/api/chat`) |
+| `api/notify.js` | Vercel serverless function: `POST /api/notify` |
+| `api/_lib/mail-core.js` | Shared email-alert logic: writes the alert and sends it through Brevo |
+| `server.js` | Local server for development (serves the site + `/api/chat` + `/api/notify`) |
 | `vercel.json` | Vercel settings (security headers) |
 | `.env.example` | Template showing which environment variables are needed |
 
 The Groq API key is **never** stored in this repository or sent to the browser. The browser calls `/api/chat`, and the server adds the key.
+
+## Email alerts for high-priority cases
+
+When a student sends a **high priority** appointment request or starts a high-priority anonymous chat, the server emails the counselors through [Brevo](https://www.brevo.com). The student sees a confirmation only once the email has really gone out.
+
+The email says what kind of case it is, the concern and the time the student is available. It never includes the student's name, contact details or what they wrote.
+
+To switch it on, add these environment variables next to `GROQ_API_KEY` (in the local `.env` file and in Vercel):
+
+- `BREVO_API_KEY` = your Brevo API key (Brevo → SMTP & API → API Keys; it starts with `xkeysib-`)
+- `MAIL_FROM` = the sender address you verified in Brevo
+- `COUNSELOR_EMAILS` = who gets the alerts, separated by commas
+- Optional: `SITE_URL` = the site's address, so the email can link to the triage dashboard
+
+Without them the site works as before and simply sends no alerts.
 
 ## Deploy to Vercel
 

@@ -13,6 +13,7 @@ const envFiles = [process.env.GB_ENV_FILE, path.join(os.homedir(), '.guidancebri
 const envFile = envFiles.find(f => fs.existsSync(f));
 if (envFile) process.loadEnvFile(envFile);
 const {handleChat, rateLimited} = require('./api/_lib/chat-core');
+const {handleNotify, mailLimited} = require('./api/_lib/mail-core');
 
 const PORT = Number(process.env.PORT) || 3000;
 if (!process.env.GROQ_API_KEY) {
@@ -23,13 +24,27 @@ if (!process.env.GROQ_API_KEY) {
 const MAX_BODY = 64 * 1024;
 const send = (res, code, obj) => { res.writeHead(code, {'Content-Type':'application/json; charset=utf-8', 'Cache-Control':'no-store'}); res.end(JSON.stringify(obj)); };
 
+// Reads a JSON request body. Answers the request itself and returns undefined if the body is too long or not JSON.
+async function readJson(req, res){
+  let raw = '';
+  for await (const chunk of req) { raw += chunk; if (raw.length > MAX_BODY) return void send(res, 413, {error:'Message too long.'}); }
+  try { return JSON.parse(raw); } catch { return void send(res, 400, {error:'Invalid JSON.'}); }
+}
+
 async function chat(req, res){
   if (rateLimited(req.socket.remoteAddress)) return send(res, 429, {error:'Too many messages. Please wait a minute.'});
-  let raw = '';
-  for await (const chunk of req) { raw += chunk; if (raw.length > MAX_BODY) return send(res, 413, {error:'Message too long.'}); }
-  let payload;
-  try { payload = JSON.parse(raw); } catch { return send(res, 400, {error:'Invalid JSON.'}); }
+  const payload = await readJson(req, res);
+  if (payload === undefined) return;
   const {status, body} = await handleChat(payload);
+  send(res, status, body);
+}
+
+// Emails the counselors about a HIGH priority case (Brevo). Needs BREVO_API_KEY, MAIL_FROM and COUNSELOR_EMAILS.
+async function notify(req, res){
+  if (mailLimited(req.socket.remoteAddress)) return send(res, 429, {error:'Too many alerts. Please wait a few minutes.'});
+  const payload = await readJson(req, res);
+  if (payload === undefined) return;
+  const {status, body} = await handleNotify(payload);
   send(res, status, body);
 }
 
@@ -49,6 +64,7 @@ function serveStatic(req, res){
 
 http.createServer((req, res) => {
   if (req.url === '/api/chat') return req.method === 'POST' ? chat(req, res) : send(res, 405, {error:'Use POST.'});
+  if (req.url === '/api/notify') return req.method === 'POST' ? notify(req, res) : send(res, 405, {error:'Use POST.'});
   if (req.method === 'GET' || req.method === 'HEAD') return serveStatic(req, res);
   send(res, 405, {error:'Method not allowed.'});
 }).listen(PORT, () => {
