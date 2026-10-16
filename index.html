@@ -1021,6 +1021,26 @@ async function ask(){
   return d.content;
 }
 
+// The chat shows plain text, so any LaTeX the AI writes anyway (\frac, \theta, ^2…) becomes readable symbols.
+const TEX = {theta:'θ', alpha:'α', beta:'β', gamma:'γ', delta:'δ', pi:'π', phi:'φ', lambda:'λ', mu:'μ', sigma:'σ', omega:'ω',
+  pm:'±', mp:'∓', cdot:'·', times:'×', div:'÷', le:'≤', leq:'≤', ge:'≥', geq:'≥', ne:'≠', neq:'≠', approx:'≈', infty:'∞', circ:'°', degree:'°', to:'→'};
+const SUP = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻','+':'⁺','n':'ⁿ'};
+const group = s => /^[\wθαβγδπφλμσω]+$/.test(s) ? s : '(' + s + ')';
+function plainMath(t){
+  if (!/\\[a-zA-Z(\[]|\$[^$\n]+\$/.test(t)) return t;
+  t = t.replace(/\\[()[\]]|\$\$?/g, '').replace(/\\(left|right|displaystyle)\b|\\[,;!]/g, '');
+  t = t.replace(/\\([a-zA-Z]+)/g, (m, w) => /^[dt]?frac$|^sqrt$/.test(w) ? m : TEX[w] || w);
+  let prev;
+  do { prev = t;
+    t = t.replace(/\\[dt]?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, (_, a, b) => group(a.trim()) + '/' + group(b.trim()))
+         .replace(/\\sqrt\s*\{([^{}]*)\}/g, (_, a) => '√' + group(a.trim()));
+  } while (t !== prev);
+  t = t.replace(/\^\{([-+0-9n]+)\}|\^([-+]?[0-9n])/g, (_, a, b) => [...(a || b)].map(c => SUP[c]).join(''))
+       .replace(/[{}]/g, '')
+       .replace(/([θαβγδπφ)])(sin|cos|tan|cot|sec|csc)/g, '$1 $2');
+  return t;
+}
+
 async function send(text){
   const t = (text || '').trim(); if (!t || busy || ended) return;
   hear(false);
@@ -1036,6 +1056,7 @@ async function send(text){
   r = r.replace(/SEVERITY:\s*(HIGH|LOW)\s*/i, '').trim();
   const tag = MOOD_LINE.exec(r);
   r = r.replace(MOOD_LINE, '').trim();
+  r = plainMath(r);
   // The AI sometimes labels the answer and the check-in in HIGH chats; the student should only see the text.
   r = r.replace(/^[ \t]*(\*\*)?(part[ \t]*\d+|answer|check-?in)(\*\*)?[ \t]*:?[ \t]*(\*\*)?[ \t]*$\n?/gim, '').trim();
   const mood = fitMood(tag && MOOD_TAGS[tag[1].toUpperCase()] || guessMood(t, r));
