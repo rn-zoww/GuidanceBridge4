@@ -963,7 +963,7 @@ function signoffText(){
           : "\n\nWhenever you're ready, a UPHSD guidance counselor is here for you, face to face or through an anonymous chat.")
     + "\n\nThis chat is now closed. Take care of yourself, and come back anytime.\n— GuidanceBridge Assistant";
 }
-const HI = /suicid|kill|hurt myself|self.?harm|end it all|weapon|knife|gun|abuse|rape|threat|beat me|hit me|want to die/i;
+const HI = /suicid|kill|hurt myself|harm(ing)? myself|self.?harm|end it all|weapon|knife|gun|abuse|rape|threat|beat me|hit me|want to die/i;
 const OKAY = /\b(i'?m|i am|im)\s+(ok|okay|alright|fine|safe|good|better)\b|\b(won'?t|not going to|never mind|joking|kidding)\b/i;
 const savedChat = jparse(SS.get('gb_chat'), {});
 let msgs = savedChat.msgs || [], sev = savedChat.sev || null, peak = savedChat.peak || null, ended = !!savedChat.ended, busy = false;
@@ -1030,6 +1030,8 @@ async function send(text){
   const m = /SEVERITY:\s*(HIGH|LOW)/i.exec(r);
   sev = m ? m[1].toUpperCase() : (sev || 'LOW');
   if (HI.test(t) && !OKAY.test(t)) sev = 'HIGH';
+  // Once a chat has been HIGH it stays HIGH until a new chat starts; only a counselor can lower it.
+  if (peak === 'HIGH') sev = 'HIGH';
   if (sev === 'HIGH') peak = 'HIGH';
   r = r.replace(/SEVERITY:\s*(HIGH|LOW)\s*/i, '').trim();
   const tag = MOOD_LINE.exec(r);
