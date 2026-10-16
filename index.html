@@ -1036,6 +1036,8 @@ async function send(text){
   r = r.replace(/SEVERITY:\s*(HIGH|LOW)\s*/i, '').trim();
   const tag = MOOD_LINE.exec(r);
   r = r.replace(MOOD_LINE, '').trim();
+  // The AI sometimes labels the answer and the check-in in HIGH chats; the student should only see the text.
+  r = r.replace(/^[ \t]*(\*\*)?(part[ \t]*\d+|answer|check-?in)(\*\*)?[ \t]*:?[ \t]*(\*\*)?[ \t]*$\n?/gim, '').trim();
   const mood = fitMood(tag && MOOD_TAGS[tag[1].toUpperCase()] || guessMood(t, r));
   if (fb && sev === 'HIGH') r += "\n\nThis sounds serious, so I've marked it high priority for a human counselor. If you are in danger right now, tell a trusted adult, call 911, or call the NCMH Crisis Hotline at 1553.";
   busy = false; msgs.push({r:'b', t:r, fb, mood}); saveChat(); drawChats();
